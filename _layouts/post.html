@@ -11,8 +11,8 @@ layout: default
 
   <div class="date">
     Fet el {{ page.date | date: "%e/%m/%Y" }} a les categories
-    {%for category in page.categories %}
-       {{category}}
+    {%for categoria in page.categories %}
+       <a href="/categoria/{{categoria}}">{{categoria}}</a>
     {% endfor %}
   </div>
 
