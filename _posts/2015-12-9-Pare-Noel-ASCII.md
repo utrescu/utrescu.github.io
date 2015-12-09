@@ -1,7 +1,7 @@
 ---
 layout: post
 title: DAW3 UF5 - El pare Noel al món ASCII
-categories: [DAW, Programació]
+categories: [daw, programació]
 ---
 
 He preparat una tasca sobre lectura de fitxers pels alumnes de DAW3.

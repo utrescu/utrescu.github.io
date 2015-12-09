@@ -1,7 +1,7 @@
 ---
 layout: post
 title: DAW3 UF5 - El pare Noel s'ha trencat una cama!
-categories: [DAW, Programació]
+categories: [daw, programació]
 ---
 
 He preparat una nova tasca sobre lectura de fitxers pels alumnes de DAW M3 - Programació.
