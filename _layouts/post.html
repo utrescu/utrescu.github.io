@@ -10,7 +10,10 @@ layout: default
   </div>
 
   <div class="date">
-    Written on {{ page.date | date: "%B %e, %Y" }}
+    Fet el {{ page.date | date: "%e/%m/%Y" }} a les categories
+    {%for category in page.categories %}
+       {{category}}
+    {% endfor %}
   </div>
 
   {% include disqus.html %}
