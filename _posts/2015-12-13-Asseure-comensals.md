@@ -3,7 +3,7 @@ layout: post
 title: Assentar els comensals en Groovy
 categories: [groovy, programació]
 ---
-He trobat un problema per Internet que es fa amb una recursivitat clàssica i l'he fet servir per aprendre Groovy.
+He trobat un problema per Internet que es fa amb una recursivitat clàssica i l'he fet servir per aprendre [Groovy](http://www.groovy-lang.org/).
 
 La idea és preparar el dinar de Nadal entre diferents persones tenint en compte el grau de felicitat que tindran els comensals al estar uns al costat dels altres. Per exemple si tenim una entrada com aquesta (el problema estava en anglès...):
 
@@ -22,11 +22,9 @@ La idea és preparar el dinar de Nadal entre diferents persones tenint en compte
 
 S'ha d'aconseguir trobar quina és la màxima felicitat que es pot aconseguir al asseure'ls en una taula circular. Per l'exemple el millor que es pot aconseguir amb la llista anterior és **330**
 
-Resolució
+Resolució del problema
 --------------
-Primer he de processar el fitxer d'entrada. La solució que he trobat és crear una llista de persones (*persons*), un diccionari amb les afinitats (*relations*).
-
-Per llegir el fitxer faig servir una expressió regular per estalviar-me comparacions
+Primer he de processar el fitxer d'entrada. Ho faig amb una expressió regular per estalviar-me comparacions. Amb cada línia vaig omplint una llista [ ] i un diccionari [:]
 
     def relations = [:]
     def persons = []
@@ -45,15 +43,15 @@ Per llegir el fitxer faig servir una expressió regular per estalviar-me compara
     persons.unique()
 
 
-Al acabar tindré una llista amb les persones, persons, i amb les relacions entre les persones, relations.
+Al final tindré la llista de persones (*persons*) a la que li he retirat els duplicats (*unique()*) i un diccionari amb les afinitats entre les persones (*relations*).
 
-Ara només cal provar totes les combinacions mirant quina és la que dóna la relació més alta. En aquest cas provo de començar per cada una de les possibles persones i genero una llista amb el número màxim aconseguit per cada una. Acaba quedant-se amb el número màxim
+Després només cal provar totes les combinacions mirant quina és la que dóna la relació més alta. Es comença per cada una de les possibles persones i mira quin és el número més gran aconseguit
 
     println persons.collect {
       calculate(0, persons.minus(it), [it], relations)
     }.max()
 
-Calculate no té secrets, és un recursiu clàssic: va passant els elements de persons a order fins que no en queda cap i es queda amb el valor aconseguit, recula i prova amb una persona diferent per veure si aconsegueix un valor més alt... Va fent fins que ha provat totes les combinacions.
+Calculate no té secrets ja que és un recursiu clàssic: va passant els elements de persons a order fins que no en queda cap i es queda amb el valor aconseguit, recula, prova amb una persona diferent i així successivament fins que ha provat totes les combinacions possibles.
 
     def calculate(valor, persons, order, relations) {
         String last = order[-1]
@@ -67,3 +65,7 @@ Calculate no té secrets, és un recursiu clàssic: va passant els elements de p
             calculate(valor + adding, persons.minus(it), order.plus(it), relations)
         }.max()
     }
+
+El resultat ja l'havia avançat abans:
+
+    330
