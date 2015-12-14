@@ -1,11 +1,13 @@
 ---
 layout: post
-title: Assentar els comensals en Groovy
+title: Asseure els comensals en Groovy
 categories: [groovy, programació]
 ---
 He trobat un problema per Internet que es fa amb una recursivitat clàssica i l'he fet servir per aprendre [Groovy](http://www.groovy-lang.org/).
 
-La idea és preparar el dinar de Nadal entre diferents persones tenint en compte el grau de felicitat que tindran els comensals al estar uns al costat dels altres. Per exemple si tenim una entrada com aquesta (el problema estava en anglès...):
+La idea és preparar el dinar de Nadal entre diferents persones tenint en compte el grau de felicitat que tindran els comensals al estar asseguts uns al costat dels altres. L'objectiu és aconseguir saber quin és el nivell de felicitat màxim.
+
+Per exemple si tenim una entrada com aquesta (el problema estava en anglès...):
 
     Alice would gain 54 happiness units by sitting next to Bob.
     Alice would lose 79 happiness units by sitting next to Carol.
