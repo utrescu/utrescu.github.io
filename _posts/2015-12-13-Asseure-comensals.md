@@ -5,7 +5,7 @@ categories: [groovy, programació]
 ---
 He trobat un problema per Internet que es fa amb una recursivitat clàssica i l'he fet servir per aprendre [Groovy](http://www.groovy-lang.org/).
 
-La idea és asseure els convidats al dinar de Nadal tenint en compte el grau de felicitat que tindran al estar asseguts els uns al costat dels altres. L'objectiu és aconseguir trobar quin és el nivell de felicitat màxim possible.
+La idea és asseure els convidats al dinar de Nadal tenint en compte el grau de felicitat que tindran al estar asseguts els uns al costat dels altres.
 
 Per exemple si tenim una entrada com aquesta (el problema estava en anglès...):
 
@@ -22,7 +22,9 @@ Per exemple si tenim una entrada com aquesta (el problema estava en anglès...):
     David would lose 7 happiness units by sitting next to Bob.
     David would gain 41 happiness units by sitting next to Carol.
 
-S'ha d'aconseguir trobar quina és la màxima felicitat que es pot aconseguir al asseure'ls en una taula circular. Per l'exemple el millor que es pot aconseguir amb la llista anterior és **330**
+S'ha d'aconseguir trobar quina és la màxima felicitat que es pot aconseguir al asseure'ls en una taula circular.
+
+Amb la llista anterior el grau màxim de felicitat és **330**
 
 Resolució del problema
 --------------
