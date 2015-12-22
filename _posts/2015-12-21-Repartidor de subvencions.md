@@ -35,6 +35,10 @@ Repartidor de subvencions
 La subsecretaría del govern us demana que els hi feu un programa per determinar com s’han de repartir els 10 milions d’euros entre els personatges nadalencs a partir de la llista que han aconseguit de regals entregats
 
 1. Prepareu el programa per determinar com s’han de repartir les subvencions als personatges que han repartit regals
-2. Quin és el resultat amb aquest [fitxer](https://drive.google.com/file/d/0BxakKCNfTojqMFQxV0g0UXhGeFE/view?usp=sharing)
+
+     a. Quin és el resultat amb aquest [fitxer](https://drive.google.com/file/d/0BxakKCNfTojqZ3dDMVdtLVB6NVU/view?usp=sharing)?
+
+    b. I amb [aquest](https://drive.google.com/file/d/0BxakKCNfTojqNUZBZXozeFhUQXM/view?usp=sharing)
+
 
 A veure com va... ;-)
