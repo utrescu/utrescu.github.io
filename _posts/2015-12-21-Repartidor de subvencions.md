@@ -24,7 +24,7 @@ Per exemple amb aquesta llista:
     Martí: Pare Noel: Cartes, Tren, Jersei
     Maria: Tió: Llapissos - Tres reis: Os de peluix
     Marcelino: Pare Noel: Jersei - Tres reis: Tren, Os de peluix, Dinosaure
-    Max: Christkind: Xocolata, Tres reis: Dinosaure, Os de peluix
+    Max: Christkind: Xocolata - Tres reis: Dinosaure, Os de peluix
 
 El programa hauria de dir què la subvenció s’ha de repartir d’aquesta forma:
 
