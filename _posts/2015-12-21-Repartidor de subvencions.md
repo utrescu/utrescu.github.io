@@ -18,17 +18,16 @@ El problema és complicat perquè hi ha gent que rep regals de més d’un perso
 
 Per exemple amb aquesta llista:
 
-    Pep: Pare Noel: Tren, Dinosaure - Tió: Os de peluix
-    Manel: Tres reis: Dinosaure, Cotxe
-    Joana:  Tió: Nina rossa, Nina morena - Tres reis: Jersei, Os de peluix
-    Martí: Pare Noel: Cartes, Tren, Jersei
-    Maria: Tió: Llapissos - Tres reis: Os de peluix
-    Marcelino: Pare Noel: Jersei - Tres reis: Tren, Os de peluix, Dinosaure
-    Max: Christkind: Xocolata - Tres reis: Dinosaure, Os de peluix
+    Josep: Tió: Biberó - Nen Jesús: Guants, Bufanda, Estoig
+    Aina: Tió: Sabates, Nina morena - Tres reis: Bicicleta, Manta, Mitjons
+    Gerard: Tió: Conillet rosa, Sabates - Tres reis: Espasa de fusta
+    Felicitat: Tió: Tren, Disc de música - Pare Noel: Nina rossa
+    Daniel: Pare Noel: Nina rossa, Caramels - Pare Noel: Mocador de coll, Sabates
+    Antonia: Tres reis: Gorro - Pare Noel: Jaqueta
 
 El programa hauria de dir què la subvenció s’ha de repartir d’aquesta forma:
 
-    Pare Noel: 28,57%  -  Tió: 19’04%  -  Tres reis: 47’61%   -   Christkind: 0,04%
+    Pare Noel: 28,57%  -  Tió: 19’04%  -  Tres reis: 47’61%   -   Christkind: 4.76%
 
 Repartidor de subvencions
 ----------------------
