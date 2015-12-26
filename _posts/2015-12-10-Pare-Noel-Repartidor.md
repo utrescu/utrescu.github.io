@@ -4,9 +4,9 @@ title: DAW3 UF5 - El pare Noel ha de repartir regals!
 categories: [daw, programació]
 ---
 
-He preparat una nova tasca sobre lectura de fitxers pels alumnes de DAW M3 - Programació.
-
-Com sempre n'he fet dues versions, una a Google Docs i una al [quadern d'exercicis de FP](https://uf.ctrl-alt-d.net/material/mostra/210/el-pare-noel-ha-de-repartir-regals)
+> He preparat una nova tasca sobre lectura de fitxers pels alumnes de DAW M3 - Programació.
+>
+> Com sempre n'he fet dues versions, una a Google Docs i una al [quadern d'exercicis de FP](https://uf.ctrl-alt-d.net/material/mostra/210/el-pare-noel-ha-de-repartir-regals)
 
 El pare Noel ha rebut tantes cartes demanant regals que s’ha vist obligat a fer diversos viatges per entregar-los.
 

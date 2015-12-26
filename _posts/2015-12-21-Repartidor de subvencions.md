@@ -4,9 +4,9 @@ title: DAW3 UF5 - Subvencions de Nadal
 categories: [daw, programació]
 ---
 
-He preparat una nova tasca sobre lectura de fitxers pels alumnes de DAW M3 - Programació.
-
-Com sempre n'he fet dues versions, una a Google Docs i una al [quadern d'exercicis de FP](https://uf.ctrl-alt-d.net/material/mostra/212/subvencions-de-nadal)
+> He preparat una nova tasca sobre lectura de fitxers pels alumnes de DAW M3 - Programació.
+>
+> Com sempre n'he fet dues versions, una a Google Docs i una al [quadern d'exercicis de FP](https://uf.ctrl-alt-d.net/material/mostra/212/subvencions-de-nadal)
 
 Una cosa que molta gent no sap és que el govern subvenciona als personatges nadalencs que porten regals. Fins fa poc tota la subvenció era rebuda pels tres reis mags però darrerament se l’han hagut de repartir amb el pare Noel. Aquest any la cosa s’ha complicat perquè per pressions dels ecologistes s’ha afegit als possibles subvencionats el Tió! (i no n’estem segurs però pot ser que s’hi afegeixi algú altre).
 
