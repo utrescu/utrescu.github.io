@@ -1,7 +1,7 @@
 ---
 layout: post
 title: DAW3 UF5 - Resolució El pare Noel al món ASCII
-categories: [daw, programació]
+categories: [daw, programació, java]
 ---
 La majoria dels alumnes han optat per anar llegint les cadenes una a una i després cercar-ne les vegades que surt cada personatge amb *indexOf*.
 
