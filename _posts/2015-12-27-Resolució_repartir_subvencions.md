@@ -6,8 +6,11 @@ categories: [daw, programació, groovy]
 He decidit provar com es pot resoldre el problema de [repartir subvencions](http://blog.utrescu.cat/Repartidor%20de%20subvencions/) en Groovy i realment la quantitat de línies és molt menor que en Java ...
 
 En resum:
+
 * Faig servir una expressió regular inicial per separar el nom del nen, que no interessa per res, i la resta ho faig com els alumnes ho intenten fer tot (amb split)
+
 * Per cada línia miro quin personatge li ha portat regals i l'incremento la quantitat (en el mapa *personatges*)
+
 * Per comptar el número de regals només cal comptar el número de comes que hi té el personatge :-)
 
 
