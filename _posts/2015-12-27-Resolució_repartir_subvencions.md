@@ -5,11 +5,8 @@ categories: [daw, programació, groovy]
 ---
 He decidit provar com es pot resoldre el problema de [repartir subvencions](http://blog.utrescu.cat/Repartidor%20de%20subvencions/) en Groovy i realment la quantitat de línies és molt menor que en Java ...
 
-En resum:
-
 Faig servir una expressió regular inicial per separar el nom del nen, que no interessa per res, i la resta ho faig com els alumnes ho intenten fer tot (amb split)
 
-<<<<<<< HEAD
     def regex = ~/^([^:]+): (.*)/
 
 Després només cal separar els personatges entre ells a partir del guió (-):
@@ -20,10 +17,7 @@ Per cada línia miro quin personatge li ha portat regals i l'incremento la quant
 
     int numregals = ((personatge[1] =~ /,/).count) + 1
 
-En resum queda una cosa com aquesta:
-=======
-El resultat serà aquest:
->>>>>>> af45ffd8fed14125c8f29652c01bbeaac419a197
+Queda una cosa com aquesta:
 
     def regex = ~/^([^:]+): (.*)/
     def personatges = [:]
