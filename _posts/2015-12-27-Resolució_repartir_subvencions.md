@@ -7,11 +7,19 @@ He decidit provar com es pot resoldre el problema de [repartir subvencions](http
 
 En resum:
 
-- Faig servir una expressió regular inicial per separar el nom del nen, que no interessa per res, i la resta ho faig com els alumnes ho intenten fer tot (amb split)
-- Per cada línia miro quin personatge li ha portat regals i l'incremento la quantitat (en el mapa *personatges*)
-- Per comptar el número de regals només cal comptar el número de comes que hi té el personatge :-)
+Faig servir una expressió regular inicial per separar el nom del nen, que no interessa per res, i la resta ho faig com els alumnes ho intenten fer tot (amb split)
 
+    def regex = ~/^([^:]+): (.*)/
 
+Després només cal separar els personatges entre ells a partir del guió (-):
+
+    def quiRegala = regals.split(" - ").
+
+Per cada línia miro quin personatge li ha portat regals i l'incremento la quantitat de regals (en el mapa *personatges*). Per comptar els regals només cal comptar les comes :-)
+
+    int numregals = ((personatge[1] =~ /,/).count) + 1
+
+En resum queda una cosa com aquesta:
 
     def regex = ~/^([^:]+): (.*)/
     def personatges = [:]
