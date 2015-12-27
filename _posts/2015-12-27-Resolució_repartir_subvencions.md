@@ -14,6 +14,7 @@ En resum:
 * Per comptar el número de regals només cal comptar el número de comes que hi té el personatge :-)
 
 
+
     def regex = ~/^([^:]+): (.*)/
     def personatges = [:]
 
