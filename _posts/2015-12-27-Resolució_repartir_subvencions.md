@@ -11,7 +11,7 @@ En resum:
 - Per cada línia miro quin personatge li ha portat regals i l'incremento la quantitat (en el mapa *personatges*)
 - Per comptar el número de regals només cal comptar el número de comes que hi té el personatge :-)
 
-
+El resultat serà aquest:
 
     def regex = ~/^([^:]+): (.*)/
     def personatges = [:]
