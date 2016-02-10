@@ -62,7 +62,7 @@ Transfer-Encoding: chunked
 {
   "cognom": "Puig",
   "id": 1,
-  nom": "Lluis"
+  "nom": "Lluis"
 }
 ```
 
@@ -124,4 +124,59 @@ i la nova persona s'afegirà a la llista ..
 
 ![resultat](https://github.com/utrescu/Groovy-Spark-Angular/raw/master/images/web2.png)
 
-O sigui només una prova per veure si podia usar Angular des d'Spark fent servir Groovy. Es pot :-)
+Si es mira el codi font tot el codi Angular està en el fitxer App.js en el directory ```scripts```:
+
+```javascript
+var app = angular.module('personesapp', [
+'ngCookies',
+'ngResource',
+'ngSanitize',
+'ngRoute'
+]);
+
+app.config(function ($routeProvider) {
+  $routeProvider.when('/', {
+    templateUrl: 'views/list.html',
+    controller: 'ListCtrl'
+  }).when('/create', {
+    templateUrl: 'views/create.html',
+    controller: 'CreateCtrl'
+  }).otherwise({
+    redirectTo: '/'
+  })
+});
+```
+
+Hi ha dos controladors, un per mostrar la llista:
+
+```javascript
+app.controller('ListCtrl', function ($scope, $http) {
+  $http.get('/persona').success(function (data) {
+    $scope.persones = data;
+  }).error(function (data, status) {
+    console.log('Error ' + data)
+  })
+});
+```
+
+I un per crear una nova entrada:
+
+```javascript
+app.controller('CreateCtrl', function ($scope, $http, $location) {
+  $scope.persona = {
+    nom: '',
+    cognom: ''
+  };
+
+  $scope.createPerson = function () {
+    console.log($scope.persona);
+    $http.post('/persona/', $scope.persona).success(function (data) {
+      $location.path('/');
+    }).error(function (data, status) {
+      console.log('Error ' + data)
+    })
+  }
+});
+```
+
+O sigui que només és una prova per veure si podia usar Angular des d'Spark fent servir Groovy. Es pot :-)
