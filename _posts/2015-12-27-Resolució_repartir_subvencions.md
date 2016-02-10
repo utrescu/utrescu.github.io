@@ -7,18 +7,24 @@ He decidit provar com es pot resoldre el problema de [repartir subvencions](http
 
 Faig servir una expressió regular inicial per separar el nom del nen, que no interessa per res, i la resta ho faig com els alumnes ho intenten fer tot (amb split)
 
+{% highlight groovy %}
     def regex = ~/^([^:]+): (.*)/
+{% endhighlight %}
 
 Després només cal separar els personatges entre ells a partir del guió (-):
-
+{% highlight groovy %}
     def quiRegala = regals.split(" - ").
+{% endhighlight %}
 
 Per cada línia miro quin personatge li ha portat regals i l'incremento la quantitat de regals (en el mapa *personatges*). Per comptar els regals només cal comptar les comes :-)
 
+{% highlight groovy %}
     int numregals = ((personatge[1] =~ /,/).count) + 1
+{% endhighlight %}
 
 Queda una cosa com aquesta:
 
+{% highlight groovy %}
     def regex = ~/^([^:]+): (.*)/
     def personatges = [:]
 
@@ -44,5 +50,7 @@ Queda una cosa com aquesta:
 
       println personatges
       personatges.each { println "${it.key} : ${it.value/totalRegals*100}" }
+{% endhighlight %}
+
 
 M'encanta la idea dels closures de [Groovy](http://www.groovy-lang.org/) i la senzillesa en el tractament de llistes i mapes que proporciona
