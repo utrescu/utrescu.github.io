@@ -1,0 +1,37 @@
+# Dependencies
+markdown:         kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Permalinks
+permalink: /:title/
+
+# Setup
+title:            Utrescu
+tagline:          'blog'
+description:      'One C developer ejected into a web based world'
+url:              http://blog.utrescu.cat
+baseurl:          /
+
+author:
+  name:           'Xavier Sala'
+  url:            https://twitter.com/utrescu
+
+paginate:         5
+
+# Custom vars
+version:          2.1.0
+
+github:
+  repo:           https://github.com/poole/hyde
+
+social:
+  github:         utrescu/
+  twitter:        utrescu
+  linkedin:
+
+gems:
+  - jekyll-sitemap # Create a sitemap using the official Jekyll sitemap gem
+  - jekyll-feed # Create an Atom feed using the official Jekyll feed gem
+  - jekyll-paginate
