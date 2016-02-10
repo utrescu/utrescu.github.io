@@ -99,14 +99,14 @@ Angular
 -----------------
 Per accedir a la web amb Angular només s'ha de visitar l'adreça http://localhost:4567 (no és cap meravella del disseny)
 
-![web](images/web.png)
+![web](https://github.com/utrescu/Groovy-Spark-Angular/raw/master/images/web.png)
 
 Per crear noves persones només s'ha de clicar a l'enllaç i omplir el formulari
 
-![crear](images/crear.png)
+![crear](https://github.com/utrescu/Groovy-Spark-Angular/raw/master/images/crear.png)
 
 i la nova persona s'afegirà a la llista ..
 
-![resultat](images/web2.png)
+![resultat](https://github.com/utrescu/Groovy-Spark-Angular/raw/master/images/web2.png)
 
 O sigui només una prova per veure si podia usar Angular des d'Spark fent servir Groovy. Es pot :-)
