@@ -3,8 +3,6 @@ layout: post
 title: Fent servir Groovy, SparkJava i Angular
 categories: [web, programació, groovy]
 ---
-Fent servir SparkJava, Groovy, Angular.js
-==========================================
 He creat un projecte per provar [AngularJS](https://angularjs.org/) amb [Spark Java](http://sparkjava.com/) fent servir [Groovy](http://www.groovy-lang.org/).
 
 Bàsicament es tracta d'una aplicació web per treure noms de persona per pantalla
