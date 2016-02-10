@@ -18,82 +18,99 @@ El servidor proporciona una interfície REST que permet llistar les persones ent
 Des de la consola es pot provar amb cUrl o Httpie.
 
 ### Persones en el sistema
-Per veure les persones del sistema s'accedeix a través de GET a ``http://localhost:4567/persones``
+Per veure les persones del sistema s'accedeix a través de GET a ```http://localhost:4567/persones```
 
-Exemple
+Fent una petició Httpie:
 
     $ http http://localhost:4567/persona
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-    Date: Wed, 10 Feb 2016 16:02:29 GMT
-    Server: Jetty(9.3.2.v20150730)
-    Transfer-Encoding: chunked
 
-    [
-    {
-      "cognom": "Sala",
-      "id": 0,
-      "nom": "Xavier"
-      },
-      {
-        "cognom": "Puig",
-        "id": 1,
-        "nom": "Lluis"
-      }
-      ]
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Wed, 10 Feb 2016 16:02:29 GMT
+Server: Jetty(9.3.2.v20150730)
+Transfer-Encoding: chunked
+
+[
+  {
+    "cognom": "Sala",
+    "id": 0,
+    "nom": "Xavier"
+  },
+  {
+    "cognom": "Puig",
+    "id": 1,
+    "nom": "Lluis"
+  }
+]
+```
 
 ### Llistar una persona pel seu id
 Es poden llistar les persones a partir del seu ``id`` amb un GET a ``http://localhost:4567/persona/1``
 
-Exemple
+Executar la petició amb Httpie:
 
     $ http http://localhost:4567/persona/1
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-    Date: Wed, 10 Feb 2016 16:03:56 GMT
-    Server: Jetty(9.3.2.v20150730)
-    Transfer-Encoding: chunked
 
-    {
-      "cognom": "Puig",
-      "id": 1,
-      "nom": "Lluis"
-    }
+Donarà de resposta:
 
-En cas de que no existeixi es rebrà un missatge d'error:
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Wed, 10 Feb 2016 16:03:56 GMT
+Server: Jetty(9.3.2.v20150730)
+Transfer-Encoding: chunked
+
+{
+  "cognom": "Puig",
+  "id": 1,
+  nom": "Lluis"
+}
+```
+
+En cas de que la persona no existeixi es rebrà un missatge d'error:
 
     $ http http://localhost:4567/persona/2
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-    Date: Wed, 10 Feb 2016 16:03:51 GMT
-    Server: Jetty(9.3.2.v20150730)
-    Transfer-Encoding: chunked
 
-    {
-      "error": "not found"
-    }
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Wed, 10 Feb 2016 16:03:51 GMT
+Server: Jetty(9.3.2.v20150730)
+Transfer-Encoding: chunked
+
+{
+  "error": "not found"
+}
+```
 
 ### Afegir una nova persona
 Per afegir persones noves només cal enviar un POST a la url 'http://localhost:4567/persona' amb el nom i cognom en format JSON en les dades
 
-    { "cognom": "Boix", "nom": "Manel" }
-
+```json
+{ "cognom": "Boix", "nom": "Manel" }
+```
 La resposta serà un fitxer JSON amb el nom, cognom i l'ID
 
-Exemple:
+Per exemple si enviem un POST amb HTTPie amb "Manel Boix"
 
     $ http http://localhost:4567/persona nom='Manel' cognom='Boix' --json
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-    Date: Wed, 10 Feb 2016 16:09:05 GMT
-    Server: Jetty(9.3.2.v20150730)
-    Transfer-Encoding: chunked
 
-    {
-      "cognom": "Boix",
-      "id": 2,
-      "nom": "Manel"
-    }
+Es rebrà un JSON amb el nou registre:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Wed, 10 Feb 2016 16:09:05 GMT
+Server: Jetty(9.3.2.v20150730)
+Transfer-Encoding: chunked
+
+{
+  "cognom": "Boix",
+  "id": 2,
+  "nom": "Manel"
+}
+```
 
 Angular
 -----------------
