@@ -162,7 +162,7 @@ Només queda generar la ISO:
 
     # mkisofs -D -r -V "ATTENDLESS_UBUNTU" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o /opt/autoinstall.iso /opt/ubuntuiso
 
-Es posa el CD en una màquina i el procés d'instal·lació es farà sense cap pregunta:
+Després de gravar-lo, la imatge és **autoinstall.iso**, es posa el CD en una màquina i el procés d'instal·lació es farà sense cap pregunta:
 
 ![Xubuntu](images/xubuntu.png)
 
@@ -177,7 +177,7 @@ Problemes
 
 ### Problemes amb LVM
 
-Si es segueix l'exemple de la web d'Ubuntu la instal·lació funciona però no arranca (de fet ni carrega Grub)
+Si es segueix l'exemple de fitxers de resposta de la web d'ajuda d'Ubuntu la instal·lació funciona però no arranca (de fet ni carrega Grub)
 
 ![fail](images/fail.png)
 
