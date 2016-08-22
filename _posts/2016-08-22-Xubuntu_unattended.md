@@ -7,7 +7,7 @@ La majoria de tutorials d'instal·lació desatesa de sistemes Ubuntu es basen en
 
 El que seria interessant seria poder modificar directament el LiveCD d'instal·lació de Xubuntu (per exemple)
 
-El problema és que no es pot fer com amb Ubuntu Server perquè les versions amb LiveCD fan servir un instal·lador anomenat Ubiquity. 
+El problema és que les respostes no són exactament iguals que les d'Ubuntu Server perquè les versions amb LiveCD fan servir un instal·lador anomenat Ubiquity. Per tant hi ha preguntes que el Debian Instal·ler no sap respondre.
 
 Creació del CD
 ---------------------
@@ -23,7 +23,7 @@ Com sempre es copien els arxius en local per poder modificar-los (en aquest cas 
 
 ### 2. Modificar els fitxers d'arrencada
 
-Són els mateixos de les opcions anteriors. Per exemple es canvia el timeout a perquè no calgui iniciar el CD manualment '/opt/iso/isolinux/isolinux.cfg'
+Es canvia el timeout a un valor que no sigui zero perquè no calgui iniciar el CD manualment '/opt/iso/isolinux/isolinux.cfg'
 
     path 
     include menu.cfg
@@ -48,15 +48,6 @@ En comptes de definir la opció **file** es pot recuperar el fitxer preseed des 
 ### 3. Crear les respostes
 
 En aquesta opció el fitxer de respostes tindrà unes opcions especials *ubiquity* que són per les opcions que no estan en el Debian Installer.
-
-Per algun motiu la instal·lació extra de paquets amb el sistema de Debian no funciona. Aquesta línia ha estat totalment ignorada:
-
-    d-i pkgsel/include string openssh-server
-
-I l'he hagut de canviar per un script de post instal·lació d'Ubiquity per poder instal·lar el servidor SSH (s'hi pot afegir el que faci falta):
-
-    ubiquity ubiquity/success_command string \
-    in-target apt-get -y install openssh-server;
 
 El fitxer de respostes xubuntu.cfg tindrà una forma semblant a aquesta: 
 
@@ -161,7 +152,7 @@ El fitxer de respostes xubuntu.cfg tindrà una forma semblant a aquesta:
     ubiquity ubiquity/reboot boolean true
     ubiquity ubiquity/poweroff boolean true
 
-I com que en la configuració he posat que les respostes estaran en el CD hi copio el fitxer xubuntu.cfg a l'arrel 
+I com que en la configuració hi he posat que les respostes estaran en el CD, copio el fitxer xubuntu.cfg a l'arrel del futur CD:
 
     # cp xubuntu.cfg /opt/iso
 
@@ -173,6 +164,8 @@ Només queda generar la ISO:
 
 Es posa el CD en una màquina i el procés d'instal·lació es farà sense cap pregunta:
 
+![Xubuntu](images/xubuntu.png)
+
 - Sistema instal·lat amb Xubuntu
 - usuari 'usuari' 
 - servidor SSH. 
@@ -181,9 +174,12 @@ Es posa el CD en una màquina i el procés d'instal·lació es farà sense cap p
 
 Problemes
 --------------
+
+### Problemes amb LVM
+
 Si es segueix l'exemple de la web d'Ubuntu la instal·lació funciona però no arranca (de fet ni carrega Grub)
 
-![fail](imatges/fail.png)
+![fail](images/fail.png)
 
 Després de moltes proves he descobert que el problema està en fer les particions amb LVM. Sembla que Ubuntu Server no hi té cap problema però les versions Desktop NO FUNCIONEN.
 
@@ -196,3 +192,14 @@ Canviant el pressed per:
     d-i partman-auto/method string regular
 
 Ha solucionat el problema immediatament.
+
+### Instal·lació de paquets extres
+
+Per algun motiu la instal·lació extra de paquets amb el sistema de Debian no funciona. Aquesta línia ha estat totalment ignorada:
+
+    d-i pkgsel/include string openssh-server
+
+I l'he hagut de canviar per un script de post instal·lació d'Ubiquity per poder instal·lar el servidor SSH (s'hi pot afegir el que faci falta):
+
+    ubiquity ubiquity/success_command string \
+    in-target apt-get -y install openssh-server;
