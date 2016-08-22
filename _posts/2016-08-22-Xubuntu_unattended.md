@@ -164,7 +164,7 @@ Només queda generar la ISO:
 
 Després de gravar-lo, la imatge és **autoinstall.iso**, es posa el CD en una màquina i el procés d'instal·lació es farà sense cap pregunta:
 
-![Xubuntu](images/xubuntu.png)
+![Xubuntu](/images/xubuntu.png)
 
 - Sistema instal·lat amb Xubuntu
 - usuari 'usuari' 
@@ -179,7 +179,7 @@ Problemes
 
 Si es segueix l'exemple de fitxers de resposta de la web d'ajuda d'Ubuntu la instal·lació funciona però no arranca (de fet ni carrega Grub)
 
-![fail](images/fail.png)
+![fail](/images/fail.png)
 
 Després de moltes proves he descobert que el problema està en fer les particions amb LVM. Sembla que Ubuntu Server no hi té cap problema però les versions Desktop NO FUNCIONEN.
 
