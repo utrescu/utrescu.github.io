@@ -303,7 +303,7 @@ Es pot obtenir més informació amb *dumpet* o *xorriso*:
 
 Després es grava aquesta imatge a un USB i ... 
 
-![Xubuntu](../imatges/xubuntu.png)
+![Xubuntu](/images/xubuntu.png)
 
 Problemes
 --------------
