@@ -24,7 +24,7 @@ class Color {
 
 Exemple d'ús
 -----------------------
-Volem consumir un servei REST que està a [http://colors-rgb.herokuapp.com]("http://colors-rgb.herokuapp.com") que proporciona dos mètodes a través de GET:
+Volem consumir un servei REST que està a [http://colors-rgb.herokuapp.com]("http://colors-rgb.herokuapp.com") i que proporciona dos mètodes a través de GET:
 
 | mètode          | resultat   |
 | --------------- | ---------- |
@@ -32,9 +32,9 @@ Volem consumir un servei REST que està a [http://colors-rgb.herokuapp.com]("htt
 | /colors        | Llista tots els colors del servei |
 
 ### Afegir les llibreries
-Per poder funcionar caldrà tenir la llibreria Retrofit2 en el CLASSPATH. Per mi la forma més senzilla és definir-la en un gestor de projectes Maven o Gradle.
+Per poder funcionar caldrà tenir la llibreria Retrofit2 en el CLASSPATH. Es pot fer descarregant les llibreries o bé a través d'un gestor de projectes.
 
-En Maven fem una cosa com aquesta:
+Per mi, la forma més senzilla és definir-la en un gestor de projectes Maven o Gradle. En Maven fem una cosa com aquesta:
 
 ```xml
 <dependency>
@@ -49,7 +49,7 @@ I en Gradle:
 compile 'com.squareup.retrofit2:retrofit:2.0.2'
 ```
 
-Si el que consumim no és HTML també farà falta afegir el **conversor**. En Retrofit hi ha diferents conversors de sèrie (però també se'n poden crear de personalitzats):
+Si el que consumim no és HTML també farà falta afegir quin **conversor** es vol fer servir. En Retrofit hi ha diferents conversors predefinits (però també se'n poden crear de personalitzats):
 
 
 * **Gson**: com.squareup.retrofit2:converter-gson
@@ -60,7 +60,7 @@ Si el que consumim no és HTML també farà falta afegir el **conversor**. En Re
 * **Simple XML**: com.squareup.retrofit2:converter-simplexml
 * **Scalars (dades primitives i les seves classe, i Strings)**: com.squareup.retrofit2:converter-scalars
 
-Per tant podem fer servir Gson o Jackson per consumir JSON. Trio Jackson en Maven:
+Per tant podem fer servir Gson o Jackson per consumir JSON. En el meu cas trio Jackson:
 
 ```xml
 <dependency>
@@ -75,31 +75,37 @@ En aquest cas el model de dades bàsic és senzill. Només cal crear un objecte 
 
 ```java
 public class Color {
-	int id;
-	String nom;
-	String rgb;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getNom() {
-		return nom;
-	}
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-	public String getRgb() {
-		return rgb;
-	}
-	public void setRgb(String rgb) {
-		this.rgb = rgb;
-	}
+   int id;
+   String nom;
+   String rgb;
+
+   public int getId() {
+     return id;
+   }
+
+   public void setId(int id) {
+     this.id = id;
+   }
+
+   public String getNom() {
+     return nom;
+   }
+
+   public void setNom(String nom) {
+     this.nom = nom;
+   }
+
+   public String getRgb() {
+     return rgb;
+   }
+
+   public void setRgb(String rgb) {
+     this.rgb = rgb;
+   }
 ```
 ### Definir el servei
 
-Per consumir el servei cal definir quins són els mètodes que volem consumir en una interfície anotada:
+Per consumir el servei cal definir quins són els mètodes que es faran servir en una interfície anotada:
 
 ```java
 import net.xaviersala.model.Color;
@@ -108,6 +114,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface ColorsRestService {
+
 	@GET("color/{color}")
 	Call<Color> getColor(@Path("color") String color);
 
@@ -116,15 +123,13 @@ public interface ColorsRestService {
 
 }
 ```
-Com es pot veure amb Retrofit 2 sempre es retorna un objecte parametritzat **Call<T>**. Bàsicament això és així per poder cridar els mètodes tant de forma síncrona com asíncrona.
+Com es pot veure, amb Retrofit 2 sempre es retorna un objecte parametritzat en **Call<T>**. Bàsicament això és així per poder cridar els mètodes tant de forma síncrona com asíncrona.
 
 Hi ha els diferents mètodes HTTP: (GET, POST, DELETE, ...) i altres anotacions **@FormUrlEncoded**, **@Multipart**, **@Headers**.
 
 ### Usar-lo
 
-Ja està tot definit, ara només cal fer servir el servei que hem definit.
-
-Primer s'ha de crear un objecte Retrofit al que se li pot definir la URL i el conversor que es farà servir:
+El programa principal només ha de crear un objecte Retrofit, en el que se li pot definir la URL, el conversor que es farà servir, ... :
 
 ```java
 Retrofit retrofit = new Retrofit.Builder()
@@ -132,7 +137,7 @@ Retrofit retrofit = new Retrofit.Builder()
   .addConverterFactory(JacksonConverterFactory.create())
   .build();
 ```
-Després es crea el servei a partir de retrofit. L'objecte creat serà la interfície:
+L'objecte Retrofit es fa servir per crear el servei a partir de la interfície:
 
 ```java
 ColorsRestService service = retrofit.create(ColorsRestService.class);
@@ -140,16 +145,13 @@ ColorsRestService service = retrofit.create(ColorsRestService.class);
 
 #### Crida síncrona
 
-Ara ja es poden cridar els mètodes de la interfície normalment. Les crides síncrones es fan amb el mètode **execute**:
-
-Es pot fer directament des de la crida:
+El mètode síncron és el més senzill. Les crides síncrones es fan amb el mètode **execute**.
 
 ```java
 Call<Color> crida =  service.getColor("vermell");
 Color color = response.execute().body();
 ```
-
-Però també es pot fer servir un objecte *Response* es podran comprovar altres coses sobre la resposta:
+També es pot recollir la resposta en un objecte *Response* de manera que es podran comprovar altres coses sobre la resposta:
 
 ```java
 Response<Color> resposta = service.getColor("vermell").execute();
