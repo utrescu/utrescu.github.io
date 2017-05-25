@@ -48,9 +48,7 @@ I en Gradle:
 ```
 compile 'com.squareup.retrofit2:retrofit:2.0.2'
 ```
-
-Si el que consumim no és HTML també farà falta afegir quin **conversor** es vol fer servir. En Retrofit hi ha diferents conversors predefinits (però també se'n poden crear de personalitzats):
-
+Si el que consumim no és HTML també farà falta afegir quin **conversor** es vol fer servir. En Retrofit hi ha diferents conversors predefinits:
 
 * **Gson**: com.squareup.retrofit2:converter-gson
 * **Jackson**: com.squareup.retrofit2:converter-jackson
@@ -59,6 +57,8 @@ Si el que consumim no és HTML també farà falta afegir quin **conversor** es v
 * **Wire**: com.squareup.retrofit2:converter-wire
 * **Simple XML**: com.squareup.retrofit2:converter-simplexml
 * **Scalars (dades primitives i les seves classe, i Strings)**: com.squareup.retrofit2:converter-scalars
+
+També se'n poden crear de personalitzats (però és una mica més complexe)
 
 Per tant podem fer servir Gson o Jackson per consumir JSON. En el meu cas trio Jackson:
 
@@ -71,6 +71,7 @@ Per tant podem fer servir Gson o Jackson per consumir JSON. En el meu cas trio J
 ```
 
 ### Crear els models
+
 En aquest cas el model de dades bàsic és senzill. Només cal crear un objecte *Color* (Jackson necessita *getters* i *setters*):
 
 ```java
@@ -123,7 +124,7 @@ public interface ColorsRestService {
 
 }
 ```
-Com es pot veure, amb Retrofit 2 sempre es retorna un objecte parametritzat en **Call<T>**. Bàsicament això és així per poder cridar els mètodes tant de forma síncrona com asíncrona.
+Com es pot veure, amb Retrofit 2 sempre es retorna un objecte parametritzat en **`Call<T>`**. Bàsicament això és així per poder cridar els mètodes tant de forma síncrona com asíncrona.
 
 Hi ha els diferents mètodes HTTP: (GET, POST, DELETE, ...) i altres anotacions **@FormUrlEncoded**, **@Multipart**, **@Headers**.
 
@@ -151,7 +152,7 @@ El mètode síncron és el més senzill. Les crides síncrones es fan amb el mè
 Call<Color> crida =  service.getColor("vermell");
 Color color = response.execute().body();
 ```
-També es pot recollir la resposta en un objecte *Response* de manera que es podran comprovar altres coses sobre la resposta:
+També es pot recollir la resposta en un objecte *`Response<T>`* de manera que es podran comprovar altres coses sobre la resposta:
 
 ```java
 Response<Color> resposta = service.getColor("vermell").execute();
@@ -162,7 +163,7 @@ if (response.code == 200) {
 
 #### Crida asíncrona
 
-Per fer una petició asíncrona caldrà definir els mètodes *onResponse* i *onFailure* en un Callback i fer servir **enqueue** en comptes d'**execute**:
+Per fer una petició asíncrona caldrà definir els mètodes *`onResponse`* i *`onFailure`* en un Callback i fer servir **enqueue** en comptes d'**execute** per fer la crida:
 
 ```java
 Call<Color> call = apiService.getColor("vermell");
