@@ -104,9 +104,27 @@ public class Color {
      this.rgb = rgb;
    }
 ```
+
+En general el model es crea seguint les normes del conversor que es farà servir.
+
+Si es fa servir Jackson com a conversor al definir el model es poden fer servir qualsevol de les anotacions de Jackson:
+
+```java
+@JsonIgnoreProperties({"nomEnCastella"})
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class Color {
+	public int id;
+    public String nom;
+	public String nomEnCastella;
+	public String rgb;
+}
+```
+
+
+
 ### Definir el servei
 
-Per consumir el servei cal definir quins són els mètodes que es faran servir en una interfície anotada:
+Per consumir el servei cal definir en una interfície quins són els mètodes de l'API que es faran servir:
 
 ```java
 import net.xaviersala.model.Color;
@@ -126,11 +144,11 @@ public interface ColorsRestService {
 ```
 Com es pot veure, amb Retrofit 2 sempre es retorna un objecte parametritzat en **`Call<T>`**. Bàsicament això és així per poder cridar els mètodes tant de forma síncrona com asíncrona.
 
-Hi ha els diferents mètodes HTTP: (GET, POST, DELETE, ...) i altres anotacions **@FormUrlEncoded**, **@Multipart**, **@Headers**.
+Es defineixen amb anotacions els diferents mètodes HTTP: (GET, POST, DELETE, ...), els paràmetres variables **@Path** i altres anotacions sobre com funciona la petició **@FormUrlEncoded**, **@Multipart**, **@Headers**.
 
 ### Usar-lo
 
-El programa principal només ha de crear un objecte Retrofit, en el que se li pot definir la URL, el conversor que es farà servir, ... :
+El programa principal ha de construir un objecte Retrofit, en el que se li pot definir la URL, el conversor que es farà servir, ... :
 
 ```java
 Retrofit retrofit = new Retrofit.Builder()
@@ -138,15 +156,14 @@ Retrofit retrofit = new Retrofit.Builder()
   .addConverterFactory(JacksonConverterFactory.create())
   .build();
 ```
-L'objecte Retrofit es fa servir per crear el servei a partir de la interfície:
+A partir de l'objecte Retrofit es crea el servei a partir de la interfície que hem definit abans:
 
 ```java
 ColorsRestService service = retrofit.create(ColorsRestService.class);
 ```
 
 #### Crida síncrona
-
-El mètode síncron és el més senzill. Les crides síncrones es fan amb el mètode **execute**.
+Es poden fer crides a l'API de forma síncrona o asíncrona. El mètode síncron és el més senzill. Les crides síncrones es fan amb el mètode **execute()**.
 
 ```java
 Call<Color> crida =  service.getColor("vermell");
@@ -163,7 +180,7 @@ if (response.code == 200) {
 
 #### Crida asíncrona
 
-Per fer una petició asíncrona caldrà definir els mètodes *`onResponse`* i *`onFailure`* en un Callback i fer servir **enqueue** en comptes d'**execute** per fer la crida:
+Per fer una petició asíncrona caldrà definir els mètodes *`onResponse()`* i *`onFailure()`* en un Callback i fer servir **enqueue()** en comptes d'**execute()** per fer la crida:
 
 ```java
 Call<Color> call = apiService.getColor("vermell");
