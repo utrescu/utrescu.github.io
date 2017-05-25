@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Usar Retrofit2 per consumir serveis REST
-categories: [desplegament ]
+categories: [programació, java]
 ---
 [Retrofit](http://square.github.io/retrofit/) és una llibreria de Java que es fa servir per consumir serveis REST de qualsevol tipus: JSON, XML, Protobuff, etc...
 
@@ -180,4 +180,4 @@ call.enqueue(new Callback<Color>() {
 
 ### Projecte GitHub
 
-He fet un projecte a GitHub que fa servir Retrofit2 i que és una mica més elaborat del que he explicat aquí.
+He fet un projecte a GitHub que fa servir Retrofit2 i que és una mica més elaborat del que he explicat aquí: [Exemple](https://github.com/utrescu/RetrofitColors)
