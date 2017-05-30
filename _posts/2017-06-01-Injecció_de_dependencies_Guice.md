@@ -94,13 +94,15 @@ compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
 Exemple
 ----------------
 
-El model seran "noms de persona" que codificaré en Strings.
+El model que es farà servir en l'exemple seran "noms de persona" que codificaré en Strings.
 
 ### Crear els objectes que s'injectaran
 
 #### Crear una interfície
 
-Es defineix una interfície amb les operacions que es voldran fer. En aquest cas ens proporciona un mecanisme amb dos mètodes:
+Primer es defineix una interfície amb les operacions que es faran en el repositori.
+
+En aquest cas la interfície  proporciona un mecanisme amb dos mètodes:
 
 * Un per afegir noms de persona a una font de dades
 * Un per saber quantes persones hi ha emmagatzemades
@@ -116,7 +118,7 @@ public interface RepositoriPersones {
 
 #### Implementar la interfíce
 
-Es desenvolupa un objecte que implementa la interfície. En aquest cas les dades estaran a memòria en una llista:
+Es desenvolupa un objecte que implementa la interfície de manera que els noms s'emmagatzemaran en memòria:
 
 ```java
 public class RepositoriPersonesMemory implements RepositoriPersones {
@@ -132,15 +134,15 @@ public class RepositoriPersonesMemory implements RepositoriPersones {
 }
 ```
 
-Es poden tenir diferents implementacions de la interfície
+Es poden tenir diferents implementacions de la interfície i carregar-les segons la configuració que fem
 
 ### Crear l'objecte configuració
 
-Cal definir quins objectes són els que es podran injectar.
+En la classe de configuració s'hi defineixen quins són els objectes que es podran injectar.
 
-La configuració es defineix en una classe que farà les funcions de configuració. La classe de configuració ha de ser un descendent de Module (normalment serà AbstractModule) i implementar-ne el mètode `configure()`
+La classe de configuració ha de ser descendent de Module (normalment serà AbstractModule) i per tant està obligada a implementar-ne el mètode `configure()`
 
-* En el mètode s'hi defineix quins tipus d'objectes són els que s'han d'injectar i quina implementació es fa servir:
+* En el mètode `configure()` s'hi defineixen quins tipus d'objectes són els que s'han d'injectar i la implementació que es fa servir:
 
 ```java
 public class GuiceConf extends AbstractModule {
@@ -154,7 +156,7 @@ public class GuiceConf extends AbstractModule {
 }
 ```
 
-Es pot definir d'altres formes, com per exemple crear-lo manualment:
+Hi ha altres formes de definir-ho, com per exemple crear-lo manualment:
 
 ```java
 bind(RepositoriPersones.class).to(new RepositoriPersonesMemory.class)
@@ -162,9 +164,7 @@ bind(RepositoriPersones.class).to(new RepositoriPersonesMemory.class)
 
 #### Injectar dependències en una classe
 
-Es pot indicar a *Guice* que en els objectes que retorna se'ls hi injecti un objecte de la configuració automàticament.
-
-Per exemple al recuperar un `GestorNoms` se li injectarà una instància de `RepositoriPersones`:
+L'objecte `GestorNoms` es fa servir per demostrar com s'injecten automàticament les dependències dels objectes obtinguts de l'Injector. En aquest cas se li injectarà una instància de `RepositoriPersones`:
 
 ```java
 public GestorNoms {
@@ -193,7 +193,7 @@ public static void main(String[] args) {
 }
 ```
 
-A partir d'aquest injector es poden obtenir les classes del programa i executar-ne els mètodes
+A partir d'aquest injector es poden obtenir les classes injectades i executar-ne els mètodes
 
 ```java
 RepositoriPersones repo = injector.getInstance(RepositoriPersones.class);
@@ -203,7 +203,7 @@ repo.afegirPersona("Frederic");
 System.out.println(repo.quantesPersonesHiHa());
 ```
 
-El mateix podem fer amb la classe `GestorNoms` al que al obtenir-la a través de l'injector se li injectarà un `RepositoriPersones` automàticament perquè té l'anotació `@Inject`:
+El mateix es pot fer amb la classe `GestorNoms`:
 
 ```java
 GestorDeNoms noms = injector.getInstance(GestorDeNoms.class);
