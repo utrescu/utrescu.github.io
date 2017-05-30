@@ -216,10 +216,12 @@ Si s'executen un rere l'altre es veurà que Guice ha creat un objecte diferent c
 
 ```java
 RepositoriPersones repositori;
+
 repositori = injector.getInstance(RepositoriPersones.class);
 System.out.println(repositori.quantesPersonesHiHa());
 repositori.afegirPersona("Frederic");
 System.out.println(repositori.quantesPersonesHiHa());
+
 System.out.println("------- GestorDeNoms -------");
 GestorDeNoms noms = injector.getInstance(GestorDeNoms.class);
 noms.run();
@@ -239,7 +241,7 @@ Es pot aconseguir que cada vegada que s'injecti sigui el mateix objecte anotant 
 ```java
 @Singleton
 public class RepositoriPersonesMemory implements RepositoriPersones{
-     ...
+    ...
 }
 ```
 
