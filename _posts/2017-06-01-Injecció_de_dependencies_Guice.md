@@ -234,7 +234,7 @@ La segona execució donarà **2** a pesar de que en l'anterior s'hi havia afegit
 2
 ```
 
-Es pot aconseguir que siguin la mateixa anotant les implementacions amb `@Singleton`:
+Es pot aconseguir que cada vegada que s'injecti sigui el mateix objecte anotant la implementació amb `@Singleton`:
 
 ```java
 @Singleton
@@ -243,7 +243,7 @@ public class RepositoriPersonesMemory implements RepositoriPersones{
 }
 ```
 
-Amb només aquest canvi només hi haurà una sola instància de cada objecte en tot el programa:
+Amb només aquest canvi es pot veure que tot i injectar-lo dues vegades l'objecte que s'aconsegeix és sempre el mateix:
 
 ```
 2
