@@ -30,7 +30,7 @@ Google Guice
 --------------
 Google Guice és un framework d'Injecció de Dependències que es pot fer servir per aplicacions on es volen mantenir les relacions de dependència en el codi de l'aplicació i no en fitxers de configuració externs.
 
-> Caldrà crear una classe en la que s'hi definiran les dependències
+> Caldrà crear una classe en la que s'hi definiran els objectes que volem que gestioni Guice
 
 En l'exemple de sota es pot veure com es fa per definir que es vol injectar una instància de `CotxeDeCarreres` com a substitut dels objectes de tipus `Cotxe`
 
@@ -46,7 +46,7 @@ public class Configuracio extends AbstractModule {
   }
 }
 ```
-En *Guice* les classes a injectar s'obtenen a partir d'un objecte anomenat **Injector**
+En *Guice* les classes a injectar, o els objectes que tinguin dependències que se'ls hi han d'injectar, s'obtenen a partir d'un objecte anomenat **Injector**
 
 ```java
 Injector injector = Guice.createInjector(new Configuracio());
@@ -54,9 +54,9 @@ Cotxe cotxet = injector.getInstance(Cotxe.class);
 ```
 Obtenim un objecte de tipus `Cotxe` (que segons la configuració serà de tipus `CotxeDeCarreres`).
 
-Al treballar amb interfícies serà senzill canviar la implementació de Cotxe que estem fent servir ara, CotxeDeCarreres, per una altra: *Només caldrà canviar la classe de configuració*
+> Al treballar amb interfícies serà senzill canviar la implementació de Cotxe que estem fent servir ara, CotxeDeCarreres, per una altra: *Només caldrà canviar la classe de configuració*
 
-Les classes que es reben de l'injector també rebran automàticament les dependències que tinguin l'anotació `@Inject`.
+Les classes que es reben de l'injector  rebran automàticament les dependències que tinguin amb l'anotació `@Inject`.
 
 L'anotació `@Inject` es pot posar tant en el constructor, com en un getter o en una propietat.
 
