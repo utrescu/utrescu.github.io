@@ -122,7 +122,7 @@ Es desenvolupa un objecte que implementa la interfície de manera que els noms s
 
 ```java
 public class RepositoriPersonesMemory implements RepositoriPersones {
-   List<String> llistaPersones = Arrays.asList("Pere", "Manel");
+   List<String> llistaPersones = new ArrayList<>(Arrays.asList("Pere", "Manel"));
 
    public int quantesPersonesHiHa() {
      return llistaPersones.size();
