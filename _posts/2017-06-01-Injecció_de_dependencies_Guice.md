@@ -22,17 +22,17 @@ La injecció de dependències aporta diferents avantatges: millora el mantenimen
 
 ### Injecció de dependències en Java
 
-En Java la injecció de dependències es sol basar en les interfícies ja que permet independitzar les dependències de la seva implementació.
-
 Hi ha diferents formes de fer Injecció de dependències en Java. El framework més "popular" és Spring però n'hi ha d'altres, CDI, Dagger, Google Guice, ... i fins i tot hi ha una especificació oficial (JSR330)
+
+En general la injecció de dependències en Java es sol basar en les *interfícies* ja que permeten independitzar les dependències de la seva implementació.
 
 Google Guice
 --------------
 Google Guice és un framework d'Injecció de Dependències que es pot fer servir per aplicacions on es volen mantenir les relacions de dependència en el codi de l'aplicació i no en fitxers de configuració externs.
 
-Per tant una de les coses que caldrà fer és crear una classe on s'hi definirà la configuració.
+> Caldrà crear una classe en la que s'hi definiran les dependències
 
-En l'exemple de sota es pot veure com es fa per injectar una instància de `CotxeDeCarreres` com a substitut dels objectes `Cotxe` (`Cotxe` normalment serà una interfície)
+En l'exemple de sota es pot veure com es fa per definir que es vol injectar una instància de `CotxeDeCarreres` com a substitut dels objectes de tipus `Cotxe`
 
 ```java
 import com.google.inject.AbstractModule;
@@ -46,19 +46,19 @@ public class Configuracio extends AbstractModule {
   }
 }
 ```
-Les classes a injectar s'obtenen d'un objecte anomenat Injector
+En *Guice* les classes a injectar s'obtenen a partir d'un objecte anomenat **Injector**
 
 ```java
 Injector injector = Guice.createInjector(new Configuracio());
 Cotxe cotxet = injector.getInstance(Cotxe.class);
 ```
-En l'exemple s'obté una variable *cotxet* de tipus `Cotxe` (que segons la configuració serà de tipus `CotxeDeCarreres`). Es pot veure que no s'ha creat amb `new`.
+Obtenim un objecte de tipus `Cotxe` (que segons la configuració serà de tipus `CotxeDeCarreres`).
 
-Al treballar amb interfícies serà senzill canviar la implementació de Cotxe per una altra: *Només caldrà canviar la classe de configuració*
+Al treballar amb interfícies serà senzill canviar la implementació de Cotxe que estem fent servir ara, CotxeDeCarreres, per una altra: *Només caldrà canviar la classe de configuració*
 
-En les classes que es reben de l'injector també s'hi pot fer servir l'anotació `@Inject` perquè les seves pròpies dependències s'injectin automàticament.
+Les classes que es reben de l'injector també rebran automàticament les dependències que tinguin l'anotació `@Inject`.
 
-L'anotació `@Inject` es pot posar tant en un constructor, com en un getter o en una propietat.
+L'anotació `@Inject` es pot posar tant en el constructor, com en un getter o en una propietat.
 
 ```java
 class CotxeDeCarreres {
