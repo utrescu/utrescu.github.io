@@ -3,8 +3,6 @@ layout: post
 title: Injecció de dependències amb Guice
 categories: [programació, java]
 ---
-Injecció de dependències
---------------------------
 
 La injecció de dependències és un patró de disseny en el que es una classe en comptes de crear els objectes que necessita els rep ja creats. Es basa en un concepte més genèric anomenat Inversió de Control
 
@@ -34,7 +32,7 @@ En Java hi ha diferents formes de fer Injecció de dependències. El framework m
 
 Google Guice
 --------------
-Google Guice és un framework de Injecció de Dependències que es pot fer servir per aplicacions on es volen mantenir les relacions de dependència en el codi de l'aplicació i no en fitxers de configuració externs.
+Google Guice és un framework d'Injecció de Dependències que es pot fer servir per aplicacions on es volen mantenir les relacions de dependència en el codi de l'aplicació i no en fitxers de configuració externs.
 
 Això en general implica que s'ha de crear una  classe on es definirà la configuració
 
