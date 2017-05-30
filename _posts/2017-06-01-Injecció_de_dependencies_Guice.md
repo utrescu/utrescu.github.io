@@ -227,7 +227,7 @@ GestorDeNoms noms = injector.getInstance(GestorDeNoms.class);
 noms.run();
 ```
 
-La segona execució donarà **2** a pesar de que en l'anterior s'hi havia afegit un element:
+El repositori de GestorDeNoms donarà **2**. Com que a l'altre hi hem afegit un element: estem en un repositori diferent!
 
 ```
 2
