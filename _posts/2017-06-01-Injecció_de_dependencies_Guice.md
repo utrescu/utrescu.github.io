@@ -4,39 +4,35 @@ title: Injecció de dependències amb Guice
 categories: [programació, java]
 ---
 
-La injecció de dependències és un patró de disseny en el que es una classe en comptes de crear els objectes que necessita els rep ja creats. Es basa en un concepte més genèric anomenat Inversió de Control
+La injecció de dependències és un patró de disseny en el que una classe rep els objectes que necessita ja creats en comptes de crear-los. Es basa en un concepte més genèric anomenat Inversió de Control
 
 > La inversió de control diu, més o menys, que una classe no hauria de crear cap classe estàticament sinó que les hauria de rebre des de fora.
 
-Per tant les classes no han de crear els objectes que els hi fan falta (mai faran **new**) sinó que els han de rebre ja creats (via un constructor, amb getters/setters ...)
+Per tant les classes mai no han de crear els objectes que els hi fan falta (mai faran **new**)
 
-Per tant l'objectiu final és un dels fonamentals en programació Orientada a Objectes: **reduïr l'acoblament**
+L'objectiu final és aconseguir un dels aspectes fonamentals en programació Orientada a Objectes: **reduïr l'acoblament**
 
 > Que no s'hagi de canviar cap classe perquè un dels objectes que fa servir hagi canviat.
 
-El més corrent és implementar aquest patró a través d'algun tipus d'*injector* que serà el que se n'encarregarà d'injectar els objectes creats als objectes que els necessitin.
+El més corrent és implementar aquest patró a través d'algun tipus d'*injector* que serà el que se n'encarregarà d'injectar els objectes ja creats a qui els necessiti.
 
 ![Injector](/images/injector.png)
 
-La injecció de dependències millora el manteniment, la flexibilitat i facilita les proves dels objectes.
-
-La injecció de dependències es pot fer servir en qualsevol llenguatge de programació.
+La injecció de dependències aporta diferents avantatges: millora el manteniment, la flexibilitat i facilita les proves unitaries dels objectes.
 
 ### Injecció de dependències en Java
 
-En Java la injecció de dependències es sol fer a través d'interfícies ja que si una classe crea un objecte que en crea un altre a través de l'operador `new` l'objecte dependrà d'aquest segon.
+En Java la injecció de dependències es sol basar en les interfícies ja que permet independitzar les dependències de la seva implementació.
 
-Idealment les classes han de ser tant independents com sigui possible i per tant l'ús de `new` dificulta la independència dels objectes.
-
-En Java hi ha diferents formes de fer Injecció de dependències. El framework més "popular" és Spring però n'hi ha d'altres, CDI, Dagger, Google Guice, ... i fins i tot hi ha una especificació oficial (JSR330)
+Hi ha diferents formes de fer Injecció de dependències en Java. El framework més "popular" és Spring però n'hi ha d'altres, CDI, Dagger, Google Guice, ... i fins i tot hi ha una especificació oficial (JSR330)
 
 Google Guice
 --------------
 Google Guice és un framework d'Injecció de Dependències que es pot fer servir per aplicacions on es volen mantenir les relacions de dependència en el codi de l'aplicació i no en fitxers de configuració externs.
 
-Això en general implica que s'ha de crear una  classe on es definirà la configuració
+Per tant una de les coses que caldrà fer és crear una classe on s'hi definirà la configuració.
 
-En aquest cas s'injectarà una instància de `CotxeDeCarreres` en cas que alguna classe necessiti un objecte de tipus `Cotxe` (`Cotxe` normalment serà una interfície)
+En l'exemple de sota es pot veure com es fa per injectar una instància de `CotxeDeCarreres` com a substitut dels objectes `Cotxe` (`Cotxe` normalment serà una interfície)
 
 ```java
 import com.google.inject.AbstractModule;
@@ -50,19 +46,19 @@ public class Configuracio extends AbstractModule {
   }
 }
 ```
-Per obtenir les classes en un objecte només cal aconseguir-la a partir de l'injector
+Les classes a injectar s'obtenen d'un objecte anomenat Injector
 
 ```java
 Injector injector = Guice.createInjector(new Configuracio());
 Cotxe cotxet = injector.getInstance(Cotxe.class);
 ```
-Es pot veure que s'obté una variable *cotxet* de tipus `Cotxe` (que segons la configuració serà de tipus `CotxeDeCarreres`) sense crear-lo amb `new` ja que serà injectat pel contenidor Guice.
+En l'exemple s'obté una variable *cotxet* de tipus `Cotxe` (que segons la configuració serà de tipus `CotxeDeCarreres`). Es pot veure que no s'ha creat amb `new`.
 
-Això ens permet, per exemple, fer una nova implementació de `Cotxe` i usar-la només canviant-ne la configuració.
+Al treballar amb interfícies serà senzill canviar la implementació de Cotxe per una altra: *Només caldrà canviar la classe de configuració*
 
-En les classes que es reben de l'injector s'hi pot fer servir l'anotació `@Inject` perquè les seves dependències s'injectin automàticament.
+En les classes que es reben de l'injector també s'hi pot fer servir l'anotació `@Inject` perquè les seves pròpies dependències s'injectin automàticament.
 
-L'anotació `@Inject` es pot posar en un constructor, en un getter o en una propietat.
+L'anotació `@Inject` es pot posar tant en un constructor, com en un getter o en una propietat.
 
 ```java
 class CotxeDeCarreres {
