@@ -122,7 +122,8 @@ Es desenvolupa un objecte que implementa la interfície de manera que els noms s
 
 ```java
 public class RepositoriPersonesMemory implements RepositoriPersones {
-   List<String> llistaPersones = new ArrayList<>(Arrays.asList("Pere", "Manel"));
+   List<String> llistaPersones;
+   llistaPersones = new ArrayList<>(Arrays.asList("Pere", "Manel"));
 
    public int quantesPersonesHiHa() {
      return llistaPersones.size();
@@ -196,7 +197,8 @@ public static void main(String[] args) {
 A partir d'aquest injector es poden obtenir les classes injectades i executar-ne els mètodes
 
 ```java
-RepositoriPersones repo = injector.getInstance(RepositoriPersones.class);
+RepositoriPersones repositori;
+repositori = injector.getInstance(RepositoriPersones.class);
 
 System.out.println(repo.quantesPersonesHiHa());
 repo.afegirPersona("Frederic");
@@ -213,7 +215,8 @@ noms.run();
 Si s'executen un rere l'altre es veurà que Guice ha creat un objecte diferent cada vegada que injecta un objecte nou. Al executar això:
 
 ```java
-RepositoriPersones repositori = injector.getInstance(RepositoriPersones.class);
+RepositoriPersones repositori;
+repositori = injector.getInstance(RepositoriPersones.class);
 System.out.println(repositori.quantesPersonesHiHa());
 repositori.afegirPersona("Frederic");
 System.out.println(repositori.quantesPersonesHiHa());
