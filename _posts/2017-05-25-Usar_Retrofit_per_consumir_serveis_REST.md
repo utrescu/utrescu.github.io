@@ -135,6 +135,8 @@ public interface ColorsRestService {
 	@GET("color/{color}")
 	Call<Color> getColor(@Path("color") String color);
 
+  @Get("color") Call<Color> getColor(@Query("nom") String nom))
+
 	@GET("/colors")
 	Call<List<Color>> getColors();
 
@@ -144,7 +146,7 @@ public interface ColorsRestService {
 ```
 Com es pot veure, amb Retrofit 2 sempre es retorna un objecte parametritzat en **`Call<T>`**. Bàsicament això és així per poder cridar els mètodes tant de forma síncrona com asíncrona.
 
-Es defineixen amb anotacions els diferents mètodes HTTP: (GET, POST, DELETE, ...), els paràmetres variables **@Path**, el cos del missatge amb **@Body**, a més d'altres anotacions sobre com funciona la petició **@FormUrlEncoded**, **@Multipart**, **@Headers**, **Field**, etc..
+Es defineixen amb anotacions els diferents mètodes HTTP: (GET, POST, DELETE, ...), els paràmetres variables **@Path**, els paràmetres amb **@Query**, el cos del missatge amb **@Body**, a més d'altres anotacions sobre com funciona la petició **@FormUrlEncoded**, **@Multipart**, **@Headers**, **Field**, etc..
 
 Aquí hi poso uns exemples diversos que no tenen a veure amb l'exemple
 
