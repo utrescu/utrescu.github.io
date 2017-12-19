@@ -10,7 +10,7 @@ permalink: /:title/
 title:            Utrescu
 tagline:          'blog'
 description:      'One C developer ejected into a web based world'
-url:              http://blog.utrescu.cat
+url:              https://blog.utrescu.cat
 baseurl:          /
 
 author:
