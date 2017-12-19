@@ -1,9 +1,9 @@
 <div class="sidebar">
   <div class="container sidebar-sticky">
     <div class="sidebar-about">
-      <img src="{{ site.baseurl }}images/xavier.png">
+      <img src="/images/xavier.png">
       <h1>
-        <a href="{{ site.baseurl }}">
+        <a href="/">
           {{ site.title }}
         </a>
       </h1>
@@ -11,20 +11,20 @@
       <p class="sidebar-nav-item">
       {% if site.social.github %}
          <a href="https://github.com/{{ site.social.github }}">
-           <img src="{{ site.baseurl }}images/icon_github.png"></a>
+           <img src="/images/icon_github.png"></a>
       {% endif %}
       {% if site.social.linkedin %}
          <a href="https://www.linkedin.com/in/{{ site.social.linkedin }}">
-           <img src="{{ site.baseurl }}images/icon_linkedin.png"></a>
+           <img src="/images/icon_linkedin.png"></a>
       {% endif %}
       {% if site.social.twitter %}
          <a href="https://www.twitter.com/{{ site.social.twitter }}">
-           <img src="{{ site.baseurl }}images/icon_twitter.png"></a>
+           <img src="/images/icon_twitter.png"></a>
       {% endif %}
       </p>
     </div>
     <nav class="sidebar-nav">
-      <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}">Home</a>
+      <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="/">Home</a>
 
       {% comment %}
         The code below dynamically generates a sidebar nav of pages with
