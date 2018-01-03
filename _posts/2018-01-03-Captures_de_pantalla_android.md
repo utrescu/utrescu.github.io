@@ -10,13 +10,13 @@ He estat fent proves sobre com fer aplicacions per Android amb Nativescript.
 
 A l'hora de fer el README.md de Github he trobat que estaria bé fer unes captures de pantalla de l'aplicació executant-se.
 
-Per això he punxat el dispositiu al portàtil i he fet les captures amb `adb`:
+Per això he punxat el dispositiu al portàtil i he fet les captures amb `adb` (reconec que ho tenia anotat):
 
     $ adb shell screencap -p /sdcard/pantalla.png
     $ adb pull /sdcard/pantalla.png
     $ adb shell rm /sdcard/pantalla.png
 
-O sigui primer fer la captura, després la transfereixo a l'ordinador i després l'esborro.
+O sigui, primer fer la captura, després la transfereixo a l'ordinador i després l'esborro.
 
 Quan n'he fet un parell ja n'estava cansat d'escriure tant i la meva reacció natural ha estat fer un script de Bash, però ... Segur que aquest és el millor sistema? Cal desar la captura al dispositiu per després esborrar-la?
 
