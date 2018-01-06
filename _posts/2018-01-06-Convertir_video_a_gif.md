@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Captures de pantalla de dispositius Android
+title: Convertir vídeos a GIF animats
 categories: [utils, android]
 ---
 Ara tothom fa gifs animats dels programes que desenvolupa i els posa al repositori de GitHub. (sembla que això fa que això et converteix en un desenvolupador que "mola")
