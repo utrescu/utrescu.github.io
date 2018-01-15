@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ca-ES" lang="ca-ES">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.33-DEV" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Injecció de dependències amb Guice &middot; Utrescu</title>
+
+  
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/print.css" media="print">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/poole.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/syntax.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Utrescu" />
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <img src="/images/xavier.png" class="icon">
+      <a href="https://blog.utrescu.cat/"><h1>Utrescu</h1></a>
+      <p class="lead">
+       One C developer ejected in a web based world 
+      </p>
+      <p class="sidebar-nav-item">
+          <a href="https://github.com/utrescu">
+               <img class="icon" src="/images/icon_github.png">
+          </a>
+          <a href="https://www.twitter.com/utrescu">
+              <img class="icon" src="/images/icon_twitter.png">
+          </a>
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://blog.utrescu.cat/">Home</a> </li>
+      <li><a href="/categories/"> Categories </a></li><li><a href="/tags/"> Etiquetes </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>Injecció de dependències amb Guice</h1>
+  <span class="post-date">Thu, Jun 1, 2017</span>
+  
+
+<p>La injecció de dependències és un patró de disseny en el que una classe rep els objectes que necessita ja creats en comptes de crear-los. Es basa en un concepte més genèric anomenat Inversió de Control</p>
+
+<blockquote>
+<p>La inversió de control diu, més o menys, que una classe no hauria de crear cap classe estàticament sinó que les hauria de rebre des de fora.</p>
+</blockquote>
+
+<p>Per tant les classes mai no han de crear els objectes que els hi fan falta (mai faran <strong>new</strong>)</p>
+
+<p>L&rsquo;objectiu final és aconseguir un dels aspectes fonamentals en programació Orientada a Objectes: <strong>reduïr l&rsquo;acoblament</strong></p>
+
+<blockquote>
+<p>Que no s&rsquo;hagi de canviar cap classe perquè un dels objectes que fa servir hagi canviat.</p>
+</blockquote>
+
+<p>El més corrent és implementar aquest patró a través d&rsquo;algun tipus d&rsquo;<em>injector</em> que serà el que se n&rsquo;encarregarà d&rsquo;injectar els objectes ja creats a qui els necessiti.</p>
+
+<p><img src="/images/injector.png" alt="Injector" /></p>
+
+<p>La injecció de dependències aporta diferents avantatges: millora el manteniment, la flexibilitat i facilita les proves unitaries dels objectes.</p>
+
+<h3 id="injecció-de-dependències-en-java">Injecció de dependències en Java</h3>
+
+<p>Hi ha diferents formes de fer Injecció de dependències en Java. El framework més &ldquo;popular&rdquo; és Spring però n&rsquo;hi ha d&rsquo;altres, CDI, Dagger, Google Guice, &hellip; i fins i tot hi ha una especificació oficial (JSR330)</p>
+
+<p>En general la injecció de dependències en Java es sol basar en les <em>interfícies</em> ja que permeten independitzar les dependències de la seva implementació.</p>
+
+<h2 id="google-guice">Google Guice</h2>
+
+<p>Google Guice és un framework d&rsquo;Injecció de Dependències que es pot fer servir per aplicacions on es volen mantenir les relacions de dependència en el codi de l&rsquo;aplicació i no en fitxers de configuració externs.</p>
+
+<blockquote>
+<p>Caldrà crear una classe en la que s&rsquo;hi definiran els objectes que volem que gestioni Guice</p>
+</blockquote>
+
+<p>En l&rsquo;exemple de sota es pot veure com es fa per definir que es vol injectar una instància de <code>CotxeDeCarreres</code> com a substitut dels objectes de tipus <code>Cotxe</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> com.google.inject.AbstractModule<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Configuracio</span> <span style="color:#66d9ef">extends</span> AbstractModule <span style="color:#f92672">{</span>
+  <span style="color:#a6e22e">@Override</span>
+  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+
+    bind<span style="color:#f92672">(</span>Cotxe<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">).</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>CotxeDeCarreres<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<p>En <em>Guice</em> les classes a injectar, o els objectes que tinguin dependències que se&rsquo;ls hi han d&rsquo;injectar, s&rsquo;obtenen a partir d&rsquo;un objecte anomenat <strong>Injector</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Injector injector <span style="color:#f92672">=</span> Guice<span style="color:#f92672">.</span><span style="color:#a6e22e">createInjector</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Configuracio<span style="color:#f92672">());</span>
+Cotxe cotxet <span style="color:#f92672">=</span> injector<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>Cotxe<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span></code></pre></div>
+<p>Obtenim un objecte de tipus <code>Cotxe</code> (que segons la configuració serà de tipus <code>CotxeDeCarreres</code>).</p>
+
+<blockquote>
+<p>Al treballar amb interfícies serà senzill canviar la implementació de Cotxe que estem fent servir ara, CotxeDeCarreres, per una altra: <em>Només caldrà canviar la classe de configuració</em></p>
+</blockquote>
+
+<p>Les classes que es reben de l&rsquo;injector  rebran automàticament les dependències que tinguin amb l&rsquo;anotació <code>@Inject</code>.</p>
+
+<p>L&rsquo;anotació <code>@Inject</code> es pot posar tant en el constructor, com en un getter o en una propietat.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CotxeDeCarreres</span> <span style="color:#f92672">{</span>
+
+  Rodes rodes<span style="color:#f92672">;</span>
+
+  <span style="color:#a6e22e">@Inject</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">CotxeDeCarreres</span><span style="color:#f92672">(</span>Rodes r<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    rodes <span style="color:#f92672">=</span> r<span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<h3 id="llibreria">Llibreria</h3>
+
+<p>Per poder fer servir Guice en un programa Java cal tenir la llibreria en el CLASSPATH. El més fàcil sol ser fer servir algun gestor de dependències com Maven o Gradle.</p>
+
+<p>En Maven afegim la dependència al pom.xml:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>com.google.inject<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>guice<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>4.1.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span></code></pre></div>
+<p>En Gradle és més o menys el mateix:</p>
+
+<pre><code>compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
+</code></pre>
+
+<h2 id="exemple">Exemple</h2>
+
+<p>El model que es farà servir en l&rsquo;exemple seran &ldquo;noms de persona&rdquo; que codificaré en Strings.</p>
+
+<h3 id="crear-els-objectes-que-s-injectaran">Crear els objectes que s&rsquo;injectaran</h3>
+
+<h4 id="crear-una-interfície">Crear una interfície</h4>
+
+<p>Primer es defineix una interfície amb les operacions que es faran en el repositori.</p>
+
+<p>En aquest cas la interfície  proporciona un mecanisme amb dos mètodes:</p>
+
+<ul>
+<li>Un per afegir noms de persona a una font de dades</li>
+<li>Un per saber quantes persones hi ha emmagatzemades</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">RepositoriPersones</span> <span style="color:#f92672">{</span>
+
+  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">quantesPersonesHiHa</span><span style="color:#f92672">();</span>
+  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afegirPersona</span><span style="color:#f92672">(</span>String nom<span style="color:#f92672">);</span>
+
+<span style="color:#f92672">}</span></code></pre></div>
+<h4 id="implementar-la-interfíce">Implementar la interfíce</h4>
+
+<p>Es desenvolupa un objecte que implementa la interfície de manera que els noms s&rsquo;emmagatzemaran en memòria:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RepositoriPersonesMemory</span> <span style="color:#66d9ef">implements</span> RepositoriPersones <span style="color:#f92672">{</span>
+   List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> llistaPersones<span style="color:#f92672">;</span>
+   llistaPersones <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;(</span>Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">asList</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Pere&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Manel&#34;</span><span style="color:#f92672">));</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">quantesPersonesHiHa</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">return</span> llistaPersones<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">afegirPersona</span><span style="color:#f92672">(</span>String nom<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+     llistaPersones<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>nom<span style="color:#f92672">);</span>
+   <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<p>Es poden tenir diferents implementacions de la interfície i carregar-les segons la configuració que fem</p>
+
+<h3 id="crear-l-objecte-configuració">Crear l&rsquo;objecte configuració</h3>
+
+<p>En la classe de configuració s&rsquo;hi defineixen quins són els objectes que es podran injectar.</p>
+
+<p>La classe de configuració ha de ser descendent de Module (normalment serà AbstractModule) i per tant està obligada a implementar-ne el mètode <code>configure()</code></p>
+
+<ul>
+<li>En el mètode <code>configure()</code> s&rsquo;hi defineixen quins tipus d&rsquo;objectes són els que s&rsquo;han d&rsquo;injectar i la implementació que es fa servir:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">GuiceConf</span> <span style="color:#66d9ef">extends</span> AbstractModule <span style="color:#f92672">{</span>
+  <span style="color:#a6e22e">@Override</span>
+  <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+
+    bind<span style="color:#f92672">(</span>RepositoriPersones<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">).</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>RepositoriPersonesMemory<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+  <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span></code></pre></div>
+<p>Hi ha altres formes de definir-ho, com per exemple crear-lo manualment:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">bind<span style="color:#f92672">(</span>RepositoriPersones<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">).</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> RepositoriPersonesMemory<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span></code></pre></div>
+<h4 id="injectar-dependències-en-una-classe">Injectar dependències en una classe</h4>
+
+<p>L&rsquo;objecte <code>GestorNoms</code> es fa servir per demostrar com s&rsquo;injecten automàticament les dependències dels objectes obtinguts de l&rsquo;Injector. En aquest cas se li injectarà una instància de <code>RepositoriPersones</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> GestorNoms <span style="color:#f92672">{</span>
+  RepositoriPersones repo<span style="color:#f92672">;</span>
+
+  <span style="color:#a6e22e">@Inject</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">GestorNoms</span><span style="color:#f92672">(</span>RepositoriPersones repo<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">repo</span> <span style="color:#f92672">=</span> repo<span style="color:#f92672">;</span>
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>repo<span style="color:#f92672">.</span><span style="color:#a6e22e">quantesPersonesHiHa</span><span style="color:#f92672">());</span>
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<h3 id="programa-principal">Programa principal</h3>
+
+<p>Per fer el programa principal només hem de fer que s&rsquo;arranqui <em>Guice</em> creant un <code>Injector</code> al que li donem la classe de configuració.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+  Injector injector <span style="color:#f92672">=</span> Guice<span style="color:#f92672">.</span><span style="color:#a6e22e">createInjector</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> GuiceConf<span style="color:#f92672">());</span>
+  <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<p>A partir d&rsquo;aquest injector es poden obtenir les classes injectades i executar-ne els mètodes</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">RepositoriPersones repositori<span style="color:#f92672">;</span>
+repositori <span style="color:#f92672">=</span> injector<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>RepositoriPersones<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>repo<span style="color:#f92672">.</span><span style="color:#a6e22e">quantesPersonesHiHa</span><span style="color:#f92672">());</span>
+repo<span style="color:#f92672">.</span><span style="color:#a6e22e">afegirPersona</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Frederic&#34;</span><span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>repo<span style="color:#f92672">.</span><span style="color:#a6e22e">quantesPersonesHiHa</span><span style="color:#f92672">());</span></code></pre></div>
+<p>El mateix es pot fer amb la classe <code>GestorNoms</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">GestorDeNoms noms <span style="color:#f92672">=</span> injector<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>GestorDeNoms<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+noms<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span></code></pre></div>
+<p>Si s&rsquo;executen un rere l&rsquo;altre es veurà que Guice ha creat un objecte diferent cada vegada que injecta un objecte nou. Al executar això:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">RepositoriPersones repositori<span style="color:#f92672">;</span>
+
+repositori <span style="color:#f92672">=</span> injector<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>RepositoriPersones<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>repositori<span style="color:#f92672">.</span><span style="color:#a6e22e">quantesPersonesHiHa</span><span style="color:#f92672">());</span>
+repositori<span style="color:#f92672">.</span><span style="color:#a6e22e">afegirPersona</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Frederic&#34;</span><span style="color:#f92672">);</span>
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>repositori<span style="color:#f92672">.</span><span style="color:#a6e22e">quantesPersonesHiHa</span><span style="color:#f92672">());</span>
+
+System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;------- GestorDeNoms -------&#34;</span><span style="color:#f92672">);</span>
+GestorDeNoms noms <span style="color:#f92672">=</span> injector<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">(</span>GestorDeNoms<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+noms<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span></code></pre></div>
+<p>El repositori de GestorDeNoms donarà <strong>2</strong>. Com que a l&rsquo;altre hi hem afegit un element: estem en un repositori diferent!</p>
+
+<pre><code>2
+3
+------- GestorDeNoms -------
+2
+</code></pre>
+
+<p>Es pot aconseguir que cada vegada que s&rsquo;injecti sigui el mateix objecte anotant la implementació amb <code>@Singleton</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Singleton</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RepositoriPersonesMemory</span> <span style="color:#66d9ef">implements</span> RepositoriPersones<span style="color:#f92672">{</span>
+    <span style="color:#f92672">...</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<p>Amb només aquest canvi es pot veure que tot i injectar-lo dues vegades l&rsquo;objecte que s&rsquo;aconsegeix és sempre el mateix:</p>
+
+<pre><code>2
+3
+------- GestorDeNoms -------
+3
+</code></pre>
+
+<h1 id="codi-de-l-exemple">Codi de l&rsquo;exemple</h1>
+
+<p>Es pot trobar el codi d&rsquo;exemple en el meu <a href="https://github.com/utrescu/GuiceExemple">repositori de Github</a></p>
+
+</div>
+
+
+
+<h3>Relacionats:</h3>
+<ul>
+	
+	<li><a href="/blog/2017-05-25-usar_retrofit_per_consumir_serveis_rest/">Usar Retrofit2 per consumir serveis REST</a></li>
+	
+	<li><a href="/blog/2016-02-10-groovy_spark_angular/">Fent servir Groovy, SparkJava i Angular</a></li>
+	
+	<li><a href="/blog/repartidor-subvencions-solucio/">Solució al repartidor de subvencions</a></li>
+	
+</ul>
+
+
+
+
+    </div>
+
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-74759613-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+  </body>
+</html>

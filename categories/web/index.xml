@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web on Utrescu</title>
+    <link>https://blog.utrescu.cat/categories/web/</link>
+    <description>Recent content in Web on Utrescu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ca-ES</language>
+    <lastBuildDate>Wed, 10 Feb 2016 18:56:17 +0100</lastBuildDate>
+    
+	<atom:link href="https://blog.utrescu.cat/categories/web/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Fent servir Groovy, SparkJava i Angular</title>
+      <link>https://blog.utrescu.cat/blog/2016-02-10-groovy_spark_angular/</link>
+      <pubDate>Wed, 10 Feb 2016 18:56:17 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/2016-02-10-groovy_spark_angular/</guid>
+      <description>He creat un projecte per provar AngularJS amb Spark Java fent servir Groovy.
+Bàsicament es tracta d&amp;rsquo;una aplicació web per treure noms de persona per pantalla
+Iniciar el projecte El projecte està en Gradle i té una tasca per iniciar-lo:
+gradle runScript  El servidor proporciona una interfície REST que permet llistar les persones entrades en el sistema i crear-ne de noves:
+Des de la consola es pot provar amb cUrl o Httpie.</description>
+    </item>
+    
+  </channel>
+</rss>

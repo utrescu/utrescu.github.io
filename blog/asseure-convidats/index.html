@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ca-ES" lang="ca-ES">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.33-DEV" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Asseure els convidats en una taula en Groovy &middot; Utrescu</title>
+
+  
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/print.css" media="print">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/poole.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/syntax.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Utrescu" />
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <img src="/images/xavier.png" class="icon">
+      <a href="https://blog.utrescu.cat/"><h1>Utrescu</h1></a>
+      <p class="lead">
+       One C developer ejected in a web based world 
+      </p>
+      <p class="sidebar-nav-item">
+          <a href="https://github.com/utrescu">
+               <img class="icon" src="/images/icon_github.png">
+          </a>
+          <a href="https://www.twitter.com/utrescu">
+              <img class="icon" src="/images/icon_twitter.png">
+          </a>
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://blog.utrescu.cat/">Home</a> </li>
+      <li><a href="/categories/"> Categories </a></li><li><a href="/tags/"> Etiquetes </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>Asseure els convidats en una taula en Groovy</h1>
+  <span class="post-date">Sun, Dec 13, 2015</span>
+  
+
+<p>He trobat un problema per Internet que es fa amb una recursivitat clàssica i l&rsquo;he fet servir per aprendre <a href="http://www.groovy-lang.org/">Groovy</a>.</p>
+
+<p>La idea és asseure els convidats al dinar de Nadal tenint en compte el grau de felicitat que tindran al estar asseguts els uns al costat dels altres.</p>
+
+<p>Per exemple si tenim una entrada com aquesta (el problema estava en anglès&hellip;):</p>
+
+<pre><code>Alice would gain 54 happiness units by sitting next to Bob.
+Alice would lose 79 happiness units by sitting next to Carol.
+Alice would lose 2 happiness units by sitting next to David.
+Bob would gain 83 happiness units by sitting next to Alice.
+Bob would lose 7 happiness units by sitting next to Carol.
+Bob would lose 63 happiness units by sitting next to David.
+Carol would lose 62 happiness units by sitting next to Alice.
+Carol would gain 60 happiness units by sitting next to Bob.
+Carol would gain 55 happiness units by sitting next to David.
+David would gain 46 happiness units by sitting next to Alice.
+David would lose 7 happiness units by sitting next to Bob.
+David would gain 41 happiness units by sitting next to Carol.
+</code></pre>
+
+<p>S&rsquo;ha d&rsquo;aconseguir trobar quina és la màxima felicitat que es pot aconseguir al asseure&rsquo;ls en una taula circular.</p>
+
+<p>Amb la llista anterior el grau màxim de felicitat és <strong>330</strong></p>
+
+<h2 id="resolució-del-problema">Resolució del problema</h2>
+
+<p>Primer he de processar el fitxer d&rsquo;entrada. Ho faig amb una expressió regular per estalviar-me comparacions. Amb cada línia vaig omplint una llista [ ] i un diccionari [:]</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">    <span style="color:#66d9ef">def</span> relations <span style="color:#f92672">=</span> <span style="color:#f92672">[:]</span>
+    <span style="color:#66d9ef">def</span> persons <span style="color:#f92672">=</span> <span style="color:#f92672">[]</span>
+
+    <span style="color:#66d9ef">def</span> regex <span style="color:#f92672">=</span> <span style="color:#f92672">~</span><span style="color:#e6db74">/(.*) would (.*) (\d+) happiness.*to (.*)\./</span>
+
+    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">File</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;input.txt&#39;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">eachLine</span> <span style="color:#f92672">{</span> line <span style="color:#f92672">-&gt;</span>
+      <span style="color:#66d9ef">def</span> match <span style="color:#f92672">=</span> regex<span style="color:#f92672">.</span><span style="color:#a6e22e">matcher</span><span style="color:#f92672">(</span>line<span style="color:#f92672">)</span>
+      persons <span style="color:#f92672">&lt;&lt;</span> match<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">][</span><span style="color:#ae81ff">1</span><span style="color:#f92672">]</span>
+      <span style="color:#66d9ef">int</span> valor <span style="color:#f92672">=</span> match<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">][</span><span style="color:#ae81ff">3</span><span style="color:#f92672">].</span><span style="color:#a6e22e">toInteger</span><span style="color:#f92672">()</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>match<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">][</span><span style="color:#ae81ff">2</span><span style="color:#f92672">]</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;lose&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        valor <span style="color:#f92672">*=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+      <span style="color:#f92672">}</span>
+      relations<span style="color:#f92672">[</span>match<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">][</span><span style="color:#ae81ff">1</span><span style="color:#f92672">]</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">+</span> match<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">][</span><span style="color:#ae81ff">4</span><span style="color:#f92672">]]</span> <span style="color:#f92672">=</span> valor
+    <span style="color:#f92672">}</span>
+    persons<span style="color:#f92672">.</span><span style="color:#a6e22e">unique</span><span style="color:#f92672">()</span></code></pre></div>
+<p>Al final tindré la llista de persones (<em>persons</em>) a la que li he retirat els duplicats (<em>unique()</em>) i un diccionari amb les afinitats entre les persones (<em>relations</em>).</p>
+
+<p>Després només cal provar totes les combinacions mirant quina és la que dóna la relació més alta. Es comença per cada una de les possibles persones i mira quin és el número més gran aconseguit</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">    println persons<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span> <span style="color:#f92672">{</span>
+      calculate<span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> persons<span style="color:#f92672">.</span><span style="color:#a6e22e">minus</span><span style="color:#f92672">(</span>it<span style="color:#f92672">),</span> <span style="color:#f92672">[</span>it<span style="color:#f92672">],</span> relations<span style="color:#f92672">)</span>
+    <span style="color:#f92672">}.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">()</span></code></pre></div>
+<p>Calculate no té secrets ja que és un recursiu clàssic: va passant els elements de persons a order fins que no en queda cap i es queda amb el valor aconseguit, recula, prova amb una persona diferent i així successivament fins que ha provat totes les combinacions possibles.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate</span><span style="color:#f92672">(</span>valor<span style="color:#f92672">,</span> persons<span style="color:#f92672">,</span> order<span style="color:#f92672">,</span> relations<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        String last <span style="color:#f92672">=</span> order<span style="color:#f92672">[-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">]</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>persons<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+           <span style="color:#66d9ef">return</span> valor <span style="color:#f92672">+</span> relations<span style="color:#f92672">[</span>last <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">+</span> order<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]]</span>
+                        <span style="color:#f92672">+</span> relations<span style="color:#f92672">[</span>order<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">+</span> last<span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> persons<span style="color:#f92672">.</span><span style="color:#a6e22e">collect</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">def</span> adding <span style="color:#f92672">=</span> relations<span style="color:#f92672">[</span>last <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">+</span> it<span style="color:#f92672">]</span>
+                         <span style="color:#f92672">+</span> relations<span style="color:#f92672">[</span>it <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;-&#34;</span> <span style="color:#f92672">+</span> last<span style="color:#f92672">]</span>
+            <span style="color:#a6e22e">calculate</span><span style="color:#f92672">(</span>valor <span style="color:#f92672">+</span> adding<span style="color:#f92672">,</span> persons<span style="color:#f92672">.</span><span style="color:#a6e22e">minus</span><span style="color:#f92672">(</span>it<span style="color:#f92672">),</span> order<span style="color:#f92672">.</span><span style="color:#a6e22e">plus</span><span style="color:#f92672">(</span>it<span style="color:#f92672">),</span> relations<span style="color:#f92672">)</span>
+        <span style="color:#f92672">}.</span><span style="color:#a6e22e">max</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">}</span></code></pre></div>
+<p>El resultat ja l&rsquo;havia avançat abans:</p>
+
+<pre><code>330
+</code></pre>
+
+</div>
+
+
+
+<h3>Relacionats:</h3>
+<ul>
+	
+	<li><a href="/blog/pare-noel3/">El pare Noel ha de repartir regals!</a></li>
+	
+	<li><a href="/blog/pare-noel2/">El pare Noel s&#39;ha trencat una cama</a></li>
+	
+	<li><a href="/blog/pare-noel/">El pare Noel al món ASCII</a></li>
+	
+</ul>
+
+
+
+
+    </div>
+
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-74759613-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+  </body>
+</html>

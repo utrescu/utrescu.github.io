@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Groovy on Utrescu</title>
+    <link>https://blog.utrescu.cat/categories/groovy/</link>
+    <description>Recent content in Groovy on Utrescu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ca-ES</language>
+    <lastBuildDate>Wed, 10 Feb 2016 18:56:17 +0100</lastBuildDate>
+    
+	<atom:link href="https://blog.utrescu.cat/categories/groovy/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Fent servir Groovy, SparkJava i Angular</title>
+      <link>https://blog.utrescu.cat/blog/2016-02-10-groovy_spark_angular/</link>
+      <pubDate>Wed, 10 Feb 2016 18:56:17 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/2016-02-10-groovy_spark_angular/</guid>
+      <description>He creat un projecte per provar AngularJS amb Spark Java fent servir Groovy.
+Bàsicament es tracta d&amp;rsquo;una aplicació web per treure noms de persona per pantalla
+Iniciar el projecte El projecte està en Gradle i té una tasca per iniciar-lo:
+gradle runScript  El servidor proporciona una interfície REST que permet llistar les persones entrades en el sistema i crear-ne de noves:
+Des de la consola es pot provar amb cUrl o Httpie.</description>
+    </item>
+    
+    <item>
+      <title>Solució al repartidor de subvencions</title>
+      <link>https://blog.utrescu.cat/blog/repartidor-subvencions-solucio/</link>
+      <pubDate>Sun, 27 Dec 2015 19:05:03 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/repartidor-subvencions-solucio/</guid>
+      <description>He decidit provar com es pot resoldre el problema de repartir subvencions en Groovy i realment la quantitat de línies és molt menor que en Java &amp;hellip;
+Faig servir una expressió regular inicial per separar el nom del nen, que no interessa per res, i la resta ho faig com els alumnes ho intenten fer tot (amb split)
+def regex = ~/^([^:]+): (.*)/ Després només cal separar els personatges entre ells a partir del guió (-):</description>
+    </item>
+    
+    <item>
+      <title>Asseure els convidats en una taula en Groovy</title>
+      <link>https://blog.utrescu.cat/blog/asseure-convidats/</link>
+      <pubDate>Sun, 13 Dec 2015 18:52:27 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/asseure-convidats/</guid>
+      <description>He trobat un problema per Internet que es fa amb una recursivitat clàssica i l&amp;rsquo;he fet servir per aprendre Groovy.
+La idea és asseure els convidats al dinar de Nadal tenint en compte el grau de felicitat que tindran al estar asseguts els uns al costat dels altres.
+Per exemple si tenim una entrada com aquesta (el problema estava en anglès&amp;hellip;):
+Alice would gain 54 happiness units by sitting next to Bob.</description>
+    </item>
+    
+  </channel>
+</rss>

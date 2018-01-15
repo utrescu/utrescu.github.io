@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ca-ES" lang="ca-ES">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.33-DEV" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Instal·lació desatesa de Xubuntu per BIOS i EFI &middot; Utrescu</title>
+
+  
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/print.css" media="print">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/poole.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/syntax.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Utrescu" />
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <img src="/images/xavier.png" class="icon">
+      <a href="https://blog.utrescu.cat/"><h1>Utrescu</h1></a>
+      <p class="lead">
+       One C developer ejected in a web based world 
+      </p>
+      <p class="sidebar-nav-item">
+          <a href="https://github.com/utrescu">
+               <img class="icon" src="/images/icon_github.png">
+          </a>
+          <a href="https://www.twitter.com/utrescu">
+              <img class="icon" src="/images/icon_twitter.png">
+          </a>
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://blog.utrescu.cat/">Home</a> </li>
+      <li><a href="/categories/"> Categories </a></li><li><a href="/tags/"> Etiquetes </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>Instal·lació desatesa de Xubuntu per BIOS i EFI</h1>
+  <span class="post-date">Mon, Aug 22, 2016</span>
+  
+
+<p>La majoria de tutorials d&rsquo;instal·lació desatesa de sistemes Ubuntu es basen en partir de la versió <em>server</em>. El problema és que al no estar basat en cap de les distribucions s&rsquo;ha de descarregar els paquets durant la instal·lació i per tant tarda una estona &hellip;</p>
+
+<p>El que seria interessant seria poder modificar directament el LiveCD d&rsquo;instal·lació de Xubuntu (per exemple)</p>
+
+<p>El problema és que les respostes no són exactament iguals que les d&rsquo;Ubuntu Server perquè les versions amb LiveCD fan servir un instal·lador anomenat Ubiquity. Per tant hi ha preguntes que el Debian Instal·ler no sap respondre.</p>
+
+<h2 id="creació-del-cd">Creació del CD</h2>
+
+<h3 id="1-fer-una-còpia-temporal-del-cd">1. Fer una còpia temporal del CD</h3>
+
+<p>Com sempre es copien els arxius en local per poder modificar-los (en aquest cas a /opt/iso):</p>
+
+<pre><code># mkdir /mnt/cdrom
+# sudo mount -o loop xubuntu-16.04.1-desktop-amd64.iso /mnt/iso
+# mkdir /opt/iso
+# cp -rT /mnt/iso /opt/iso 
+</code></pre>
+
+<h3 id="2-modificar-els-fitxers-d-arrencada-per-bios">2. Modificar els fitxers d&rsquo;arrencada per BIOS</h3>
+
+<p>Es canvia el timeout a un valor que no sigui zero perquè no calgui iniciar el CD manualment &lsquo;/opt/iso/isolinux/isolinux.cfg&rsquo;</p>
+
+<pre><code>path 
+include menu.cfg
+default vesamenu.c32
+prompt 0
+timeout 10
+ui gfxboot bootlogo
+</code></pre>
+
+<p>Es modifica el fitxer <em>txt.cfg</em> del mateix directori per fer que la instal·lació sigui la opció per defecte <em>default</em> per <em>live-install</em> i es canvien els paràmetres d&rsquo;arrencada de <em>live-install</em> (deixo el teclat americà perquè com que no respondré cap pregunta &hellip; )</p>
+
+<pre><code>default live-install
+label live-install
+  menu label ^Install Xubuntu
+  kernel /casper/vmlinuz.efi
+  append auto file=/cdrom/xubuntu.cfg keyboard-configuration/layoutcode=us and console-setup/ask_detect=false boot=casper automatic-ubiquity noprompt initrd=/casper/initrd.lz ---
+</code></pre>
+
+<p>En comptes de definir la opció <strong>file</strong> es pot recuperar el fitxer preseed des d&rsquo;un servidor ftp o http. Per exemple per carregar les respostes des d&rsquo;un servidor web situat a 192.168.11.3:</p>
+
+<pre><code>url=http://192.168.11.3/xubuntu.cfg
+</code></pre>
+
+<h3 id="2b-modificar-els-fitxers-d-arrencada-per-uefi">2b. Modificar els fitxers d&rsquo;arrencada per UEFI</h3>
+
+<p>Resulta que els sistemes amb UEFI no fan servir isolinux per arrancar sinó que fan servir Grub. Per això per aquests sistemes s&rsquo;ha de modificar <em>grub.cfg</em> i posar-hi les opcions d&rsquo;arrancada del kernel.</p>
+
+<p>Per exemple afegir <code>set timeout=1</code> fa que no calgui prémer return:</p>
+
+<pre><code>if loadfont /boot/grub/font.pf2 ; then
+    set gfxmode=auto
+    insmod efi_gop
+    insmod efi_uga
+    insmod gfxterm
+    terminal_output gfxterm
+fi
+
+set menu_color_normal=white/black
+set menu_color_highlight=black/light-gray
+set timeout=1
+set default=0
+
+menuentry &quot;Install automatic&quot; {
+        set gfxpayload=keep
+    linux   /casper/vmlinuz.efi  file=/cdrom/xubuntu.cfg boot=casper auto automatic-ubiquity noprompt quiet ---
+        initrd /casper/initrd.lz
+}
+...
+</code></pre>
+
+<h3 id="3-crear-les-respostes">3. Crear les respostes</h3>
+
+<p>En aquesta opció el fitxer de respostes tindrà unes opcions especials <em>ubiquity</em> que són per les opcions específiques de l&rsquo;instal·lador d&rsquo;Ubuntu que no estan en el Debian Installer.</p>
+
+<p>Per algun motiu la instal·lació extra de paquets amb el sistema de Debian no funciona (amb els altres sistemes anava&hellip;) però ara aquesta línia ha estat totalment ignorada:</p>
+
+<pre><code>d-i pkgsel/include string openssh-server
+</code></pre>
+
+<p>Per poder instal·lar el servidor OpenSSH ho he hagut de fer en un script de post instal·lació d&rsquo;Ubiquity (s&rsquo;hi pot afegir el que faci falta):</p>
+
+<pre><code>ubiquity ubiquity/success_command string \
+in-target apt-get -y install openssh-server;
+</code></pre>
+
+<p>El fitxer de respostes xubuntu.cfg tindrà una forma semblant a aquesta:</p>
+
+<pre><code># Respostes de Ubiquity (Ubuntu installer)
+ubiquity languagechooser/language-name select Català
+ubiquity countrychooser/shortlist select ES
+ubiquity time/zone   select  Europe/Madrid
+ubiquity debian-installer/locale select  ca_ES.UTF-8
+ubiquity localechooser/supported-locales multiselect en_US.UTF-8, ca_ES.UTF-8
+ubiquity console-setup/ask_detect    boolean false
+ubiquity keyboard-configuration/layoutcode   select  es
+console-setup   console-setup/layoutcode    string  es
+
+ubiquity ubiquity/summary note
+
+ubiquity ubiquity/reboot boolean true
+
+d-i debian-installer/locale string ca_ES.UTF8
+d-i localechooser/supported-locales multiselect ca_ES.UTF-8, en_US.UTF-8
+
+# Teclat
+d-i console-setup/ask _detect boolean false
+d-i console-setup/layoutcode es
+d-i keyboard-configuration/modelcode string pc105
+d-i keyboard-configuration/layoutcode string es
+d-i keyboard-configuration/variantcode string cat
+
+### Configuració de la xarxa
+d-i netcfg/choose_interface select auto
+d-i netcfg/wireless_wep string
+
+### Mirror (no tinc clar que calgui)
+choose-mirror-bin mirror/http/proxy string
+
+### Sincronitza rellotges
+d-i clock-setup/utc boolean true
+d-i time/zone string Europe/Madrid
+d-i clock-setup/ntp boolean true
+
+### Evitar que faci preguntes si ja hi ha una partició
+d-i preseed/early_command string umount /media
+
+### Partició de disc amb carpeta /home en una partició a part.
+d-i partman-auto/method string regular
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-auto/choose_recipe select home
+d-i partman/default_filesystem string ext4
+
+d-i partman/confirm_write_new_label boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-auto-lvm/guided_size string max
+
+### Creació del compte d'usuari 'usuari'
+d-i passwd/user-fullname string Usuari pelat
+d-i passwd/username string usuari
+#d-i passwd/user-password password patata
+#d-i passwd/user-password-again password patata
+d-i passwd/user-password-crypted password $6$Z2WoBEMQnL5cMx$.2C0ttvnfFyS3hiDrUlIuEGE6r35vjAVec7zIS07FM8zcZuzezNfZicEXa3A/NxMm91q1FRrxYQJLCa8hyIVs1
+d-i user-setup/encrypt-home boolean false
+d-i user-setup/allow-password-weak boolean true
+
+### Definir els repositoris
+d-i mirror/country string ES
+d-i mirror/http/proxy string
+d-i apt-setup/restricted boolean true
+d-i apt-setup/universe boolean true
+d-i pkgsel/install-language-support boolean true
+d-i pkgsel/ignore-incomplete-language-support boolean true
+
+### Instal·lació de paquets 
+# Install the Xubuntu desktop.
+tasksel tasksel/first   multiselect xubuntu-desktop
+d-i pkgsel/language-pack-patterns   string
+
+ubiquity ubiquity/success_command string \
+  in-target apt-get -y install openssh-server;
+
+d-i pkgsel/upgrade select none
+d-i pkgsel/update-policy select unattended-upgrades
+
+### Instal·lació de Grub 
+
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/with_other_os boolean false
+d-i grub-installer/password password patata
+d-i grub-installer/password-again password patata
+# or encrypted using an MD5 hash, see grub-md5-crypt(8).
+#d-i grub-installer/password-crypted password [MD5 hash]
+d-i grub-installer/bootdev  string default
+
+### Finishing up the installation
+d-i finish-install/reboot_in_progress note
+ubiquity ubiquity/reboot boolean true
+ubiquity ubiquity/poweroff boolean true
+</code></pre>
+
+<p>I com que en la configuració he posat que les respostes estaran en el CD hi copio el fitxer xubuntu.cfg a l&rsquo;arrel</p>
+
+<pre><code># cp xubuntu.cfg /opt/iso
+</code></pre>
+
+<ol>
+<li>Generar la ISO i provar-ho
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</li>
+</ol>
+
+<p>Segons molts tutorials per generar la ISO n&rsquo;hi hauria d&rsquo;haver prou amb això:</p>
+
+<pre><code># mkisofs -r -U -V &quot;Custom&quot; -cache-inodes -J -joliet-long -v -T \ 
+  -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot \ 
+  -boot-load-size 4 -boot-info-table -eltorito-alt-boot \ 
+  -e boot/grub/efi.img -no-emul-boot -o /opt/xautomount2.iso /opt/iso
+</code></pre>
+
+<p>Es pot comprovar que la ISO generada té suport de UEFI:</p>
+
+<pre><code># dumpet -i /opt/xautomount2.iso 
+Validation Entry:
+    Header Indicator: 0x01 (Validation Entry)
+    PlatformId: 0x00 (80x86)
+    ID: &quot;&quot;
+    Checksum: 0x55aa
+    Key bytes: 0x55aa
+Boot Catalog Default Entry:
+    Entry is bootable
+    Boot Media emulation type: no emulation
+    Media load segment: 0x0 (0000:7c00)
+    System type: 0 (0x00)
+    Load Sectors: 4 (0x0004)
+    Load LBA: 184 (0x000000b8)
+Section Header Entry:
+    Header Indicator: 0x91 (Final Section Header Entry)
+    PlatformId: 0xef (EFI)
+    Section Entries: 1
+    ID: &quot;&quot;
+Boot Catalog Section Entry:
+    Entry is bootable
+    Boot Media emulation type: no emulation
+    Media load address: 0 (0x0000)
+    System type: 0 (0x00)
+    Load Sectors: 4736 (0x1280)
+    Load LBA: 204 (0x000000cc)
+</code></pre>
+
+<p>El problema està en que si es fa servir aquesta ISO en un CD o DVD funciona però si es passa a un USB <strong>no arranca de cap forma</strong>.</p>
+
+<p>Per poder fer servir la ISO en un USB i que funcioni s&rsquo;ha d&rsquo;afegir un MBR:</p>
+
+<blockquote>
+<p>ISO 9660 filesystems which are created by the mkisofs will boot via BIOS firmware, but only from optical media like CD, DVD, or BD.
+The isohybrid feature enhances such filesystems by a Master Boot Record (MBR) for booting via BIOS from disk storage devices like USB flash drives.</p>
+</blockquote>
+
+<p>Per tant cal fer servir isohybrid. El més fàcil és recuperar el MBR de la ISO del CD d&rsquo;instal·lació de Xubuntu:</p>
+
+<pre><code>$ sudo dd if=ubuntu-16.04-desktop-amd64.iso bs=512 count=1 of=/opt/iso/isolinux/isohdpfx.bin
+</code></pre>
+
+<p>I genero la ISO amb xorriso (no és conya):</p>
+
+<pre><code>$ cd /opt/iso
+$ sudo xorriso -as mkisofs -r -J -joliet-long -l -cache-inodes \
+  -isohybrid-mbr isolinux/isohdpfx.bin \ 
+  -c isolinux/boot.cat -b isolinux/isolinux.bin \ 
+  -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot \ 
+  -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat \ 
+  -o /opt/xautomount2.iso .
+</code></pre>
+
+<p>Es pot comprovar que hi ha dues particions en la ISO:</p>
+
+<pre><code>$ sudo fdisk -lu xautomount2.iso
+Disk xautomount2.iso: 1,2 GiB, 1265106944 bytes, 2470912 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x37bc4635
+
+Dispositiu         Arrencada Start   Final Sectors  Size Id Tipus
+xautomount2.iso1 *               0 2470911 2470912  1,2G  0 Buida
+xautomount2.iso2               716    5451    4736  2,3M ef EFI (FAT-12/16/32)
+</code></pre>
+
+<p>Es pot comprovar que les característiques de la ISO són les mateixes que les del CD original de Xubuntu fent servir <strong>isoinfo</strong>:</p>
+
+<pre><code>$ isoinfo -d -i xautomount2.iso 
+CD-ROM is in ISO 9660 format
+System id: 
+Volume id: ISOIMAGE
+Volume set id: 
+Publisher id: 
+Data preparer id: XORRISO-1.4.4 2016.07.01.140001, LIBISOBURN-1.4.4, LIBISOFS-1.4.4, LIBBURN-1.4.4
+Application id: 
+Copyright File id: 
+Abstract File id: 
+Bibliographic File id: 
+Volume set size is: 1
+Volume set sequence number is: 1
+Logical block size is: 2048
+Volume size is: 617728
+El Torito VD version 1 found, boot catalog is in sector 178
+Joliet with UCS level 3 found
+Rock Ridge signatures version 1 found
+Eltorito validation header:
+    Hid 1
+    Arch 0 (x86)
+    ID ''
+    Key 55 AA
+    Eltorito defaultboot header:
+        Bootid 88 (bootable)
+        Boot media 0 (No Emulation Boot)
+        Load segment 0
+        Sys type 0
+        Nsect 4
+        Bootoff 553 1363
+</code></pre>
+
+<p>Es pot obtenir més informació amb <em>dumpet</em> o <em>xorriso</em>:</p>
+
+<pre><code># xorriso -indev xautomount2.iso -toc -pvd_info
+# dumpet -i xautomount2.iso 
+</code></pre>
+
+<p>Després es grava aquesta imatge a un USB i &hellip;</p>
+
+<p><img src="/images/xubuntu.png" alt="Xubuntu" /></p>
+
+<h2 id="problemes">Problemes</h2>
+
+<h3 id="problemes-amb-lvm">Problemes amb LVM</h3>
+
+<p>Si es segueix l&rsquo;exemple de fitxers de resposta de la web d&rsquo;ajuda d&rsquo;Ubuntu la instal·lació funciona però no arranca (de fet ni carrega Grub)</p>
+
+<p><img src="/images/fail.png" alt="fail" /></p>
+
+<p>Després de moltes proves he descobert que el problema està en fer les particions amb LVM. Sembla que Ubuntu Server no hi té cap problema però les versions Desktop NO FUNCIONEN.</p>
+
+<p>O sigui que no es pot tenir una línia com aquesta:</p>
+
+<pre><code>d-i partman-auto/method string lvm
+</code></pre>
+
+<p>Canviant el pressed per:</p>
+
+<pre><code>d-i partman-auto/method string regular
+</code></pre>
+
+<p>Ha solucionat el problema immediatament.</p>
+
+<h3 id="instal-lació-de-paquets-extres">Instal·lació de paquets extres</h3>
+
+<p>Per algun motiu la instal·lació extra de paquets amb el sistema de Debian no funciona. Aquesta línia ha estat totalment ignorada:</p>
+
+<pre><code>d-i pkgsel/include string openssh-server
+</code></pre>
+
+<p>I l&rsquo;he hagut de canviar per un script de post instal·lació d&rsquo;Ubiquity per poder instal·lar el servidor SSH (s&rsquo;hi pot afegir el que faci falta):</p>
+
+<pre><code>ubiquity ubiquity/success_command string \
+in-target apt-get -y install openssh-server;
+</code></pre>
+
+</div>
+
+
+
+
+
+
+    </div>
+
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-74759613-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+  </body>
+</html>

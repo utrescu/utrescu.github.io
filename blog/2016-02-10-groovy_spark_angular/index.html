@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ca-ES" lang="ca-ES">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.33-DEV" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Fent servir Groovy, SparkJava i Angular &middot; Utrescu</title>
+
+  
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/print.css" media="print">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/poole.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/syntax.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Utrescu" />
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <img src="/images/xavier.png" class="icon">
+      <a href="https://blog.utrescu.cat/"><h1>Utrescu</h1></a>
+      <p class="lead">
+       One C developer ejected in a web based world 
+      </p>
+      <p class="sidebar-nav-item">
+          <a href="https://github.com/utrescu">
+               <img class="icon" src="/images/icon_github.png">
+          </a>
+          <a href="https://www.twitter.com/utrescu">
+              <img class="icon" src="/images/icon_twitter.png">
+          </a>
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://blog.utrescu.cat/">Home</a> </li>
+      <li><a href="/categories/"> Categories </a></li><li><a href="/tags/"> Etiquetes </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>Fent servir Groovy, SparkJava i Angular</h1>
+  <span class="post-date">Wed, Feb 10, 2016</span>
+  
+
+<p>He creat un projecte per provar <a href="https://angularjs.org/">AngularJS</a> amb <a href="http://sparkjava.com/">Spark Java</a> fent servir <a href="http://www.groovy-lang.org/">Groovy</a>.</p>
+
+<p>Bàsicament es tracta d&rsquo;una aplicació web per treure noms de persona per pantalla</p>
+
+<h2 id="iniciar-el-projecte">Iniciar el projecte</h2>
+
+<p>El projecte està en Gradle i té una tasca per iniciar-lo:</p>
+
+<pre><code>gradle runScript
+</code></pre>
+
+<p>El servidor proporciona una interfície REST que permet llistar les persones entrades en el sistema i crear-ne de noves:</p>
+
+<p>Des de la consola es pot provar amb cUrl o Httpie.</p>
+
+<h3 id="persones-en-el-sistema">Persones en el sistema</h3>
+
+<p>Per veure les persones del sistema s&rsquo;accedeix a través de GET a <code>http://localhost:4567/persona</code></p>
+
+<p>Fent una petició Httpie:</p>
+
+<pre><code>$ http http://localhost:4567/persona
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> <span style="color:#a6e22e">OK</span>
+Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/json</span>
+Date<span style="color:#f92672">:</span> <span style="color:#ae81ff">Wed, 10 Feb 2016 16:02:29 GMT</span>
+Server<span style="color:#f92672">:</span> <span style="color:#ae81ff">Jetty(9.3.2.v20150730)</span>
+Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+
+[
+  {
+    &#34;cognom&#34;: &#34;Sala&#34;,
+    &#34;id&#34;: 0,
+    &#34;nom&#34;: &#34;Xavier&#34;
+  },
+  {
+    &#34;cognom&#34;: &#34;Puig&#34;,
+    &#34;id&#34;: 1,
+    &#34;nom&#34;: &#34;Lluis&#34;
+  }
+]</code></pre></div>
+<h3 id="llistar-una-persona-pel-seu-id">Llistar una persona pel seu id</h3>
+
+<p>Es poden llistar les persones a partir del seu <code>id</code> amb un GET a <code>http://localhost:4567/persona/1</code></p>
+
+<p>Executant la petició amb Httpie:</p>
+
+<pre><code>$ http http://localhost:4567/persona/1
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> <span style="color:#a6e22e">OK</span>
+Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/json</span>
+Date<span style="color:#f92672">:</span> <span style="color:#ae81ff">Wed, 10 Feb 2016 16:03:56 GMT</span>
+Server<span style="color:#f92672">:</span> <span style="color:#ae81ff">Jetty(9.3.2.v20150730)</span>
+Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+
+{
+  &#34;cognom&#34;: &#34;Puig&#34;,
+  &#34;id&#34;: 1,
+  &#34;nom&#34;: &#34;Lluis&#34;
+}</code></pre></div>
+<p>En cas de que la persona no existeixi es rebrà un missatge d&rsquo;error:</p>
+
+<pre><code>$ http http://localhost:4567/persona/2
+</code></pre>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> <span style="color:#a6e22e">OK</span>
+Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/json</span>
+Date<span style="color:#f92672">:</span> <span style="color:#ae81ff">Wed, 10 Feb 2016 16:03:51 GMT</span>
+Server<span style="color:#f92672">:</span> <span style="color:#ae81ff">Jetty(9.3.2.v20150730)</span>
+Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+
+{
+  &#34;error&#34;: &#34;not found&#34;
+}</code></pre></div>
+<h3 id="afegir-una-nova-persona">Afegir una nova persona</h3>
+
+<p>Per afegir persones noves només cal enviar un POST a la url &lsquo;<a href="http://localhost:4567/persona'">http://localhost:4567/persona'</a> amb el nom i cognom en format JSON en les dades</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{ <span style="color:#f92672">&#34;cognom&#34;</span>: <span style="color:#e6db74">&#34;Boix&#34;</span>, <span style="color:#f92672">&#34;nom&#34;</span>: <span style="color:#e6db74">&#34;Manel&#34;</span> }</code></pre></div>
+<p>La resposta serà un fitxer JSON amb el nom, cognom i l&rsquo;ID</p>
+
+<p>Per exemple si enviem un POST amb HTTPie amb &ldquo;Manel Boix&rdquo;</p>
+
+<pre><code>$ http http://localhost:4567/persona nom='Manel' cognom='Boix' --json
+</code></pre>
+
+<p>Es rebrà un JSON amb el nou registre:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#66d9ef">HTTP</span><span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> <span style="color:#a6e22e">OK</span>
+Content-Type<span style="color:#f92672">:</span> <span style="color:#ae81ff">application/json</span>
+Date<span style="color:#f92672">:</span> <span style="color:#ae81ff">Wed, 10 Feb 2016 16:09:05 GMT</span>
+Server<span style="color:#f92672">:</span> <span style="color:#ae81ff">Jetty(9.3.2.v20150730)</span>
+Transfer-Encoding<span style="color:#f92672">:</span> <span style="color:#ae81ff">chunked</span>
+
+{
+  &#34;cognom&#34;: &#34;Boix&#34;,
+  &#34;id&#34;: 2,
+  &#34;nom&#34;: &#34;Manel&#34;
+}</code></pre></div>
+<h2 id="angular">Angular</h2>
+
+<p>Per accedir a la web amb Angular només s&rsquo;ha de visitar l&rsquo;adreça <a href="http://localhost:4567">http://localhost:4567</a> (no és cap meravella del disseny)</p>
+
+<p><img src="https://github.com/utrescu/Groovy-Spark-Angular/raw/master/images/web.png" alt="web" /></p>
+
+<p>Per crear noves persones només s&rsquo;ha de clicar a l&rsquo;enllaç i omplir el formulari</p>
+
+<p><img src="https://github.com/utrescu/Groovy-Spark-Angular/raw/master/images/crear.png" alt="crear" /></p>
+
+<p>i la nova persona s&rsquo;afegirà a la llista ..</p>
+
+<p><img src="https://github.com/utrescu/Groovy-Spark-Angular/raw/master/images/web2.png" alt="resultat" /></p>
+
+<p>Si es mira el codi font tot el codi Angular està en el fitxer App.js en el directory <code>scripts</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">app</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">angular</span>.<span style="color:#a6e22e">module</span>(<span style="color:#e6db74">&#39;personesapp&#39;</span>, [
+<span style="color:#e6db74">&#39;ngCookies&#39;</span>,
+<span style="color:#e6db74">&#39;ngResource&#39;</span>,
+<span style="color:#e6db74">&#39;ngSanitize&#39;</span>,
+<span style="color:#e6db74">&#39;ngRoute&#39;</span>
+]);
+
+<span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">config</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">$routeProvider</span>) {
+  <span style="color:#a6e22e">$routeProvider</span>.<span style="color:#a6e22e">when</span>(<span style="color:#e6db74">&#39;/&#39;</span>, {
+    <span style="color:#a6e22e">templateUrl</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;views/list.html&#39;</span>,
+    <span style="color:#a6e22e">controller</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;ListCtrl&#39;</span>
+  }).<span style="color:#a6e22e">when</span>(<span style="color:#e6db74">&#39;/create&#39;</span>, {
+    <span style="color:#a6e22e">templateUrl</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;views/create.html&#39;</span>,
+    <span style="color:#a6e22e">controller</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;CreateCtrl&#39;</span>
+  }).<span style="color:#a6e22e">otherwise</span>({
+    <span style="color:#a6e22e">redirectTo</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;/&#39;</span>
+  })
+});</code></pre></div>
+<p>Hi ha dos controladors, un per mostrar la llista:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">controller</span>(<span style="color:#e6db74">&#39;ListCtrl&#39;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">$scope</span>, <span style="color:#a6e22e">$http</span>) {
+  <span style="color:#a6e22e">$http</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#39;/persona&#39;</span>).<span style="color:#a6e22e">success</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">data</span>) {
+    <span style="color:#a6e22e">$scope</span>.<span style="color:#a6e22e">persones</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>;
+  }).<span style="color:#a6e22e">error</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">status</span>) {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Error &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">data</span>)
+  })
+});</code></pre></div>
+<p>I un per crear una nova entrada:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">app</span>.<span style="color:#a6e22e">controller</span>(<span style="color:#e6db74">&#39;CreateCtrl&#39;</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">$scope</span>, <span style="color:#a6e22e">$http</span>, <span style="color:#a6e22e">$location</span>) {
+  <span style="color:#a6e22e">$scope</span>.<span style="color:#a6e22e">persona</span> <span style="color:#f92672">=</span> {
+    <span style="color:#a6e22e">nom</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>,
+    <span style="color:#a6e22e">cognom</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;&#39;</span>
+  };
+
+  <span style="color:#a6e22e">$scope</span>.<span style="color:#a6e22e">createPerson</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span> () {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">$scope</span>.<span style="color:#a6e22e">persona</span>);
+    <span style="color:#a6e22e">$http</span>.<span style="color:#a6e22e">post</span>(<span style="color:#e6db74">&#39;/persona/&#39;</span>, <span style="color:#a6e22e">$scope</span>.<span style="color:#a6e22e">persona</span>).<span style="color:#a6e22e">success</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">data</span>) {
+      <span style="color:#a6e22e">$location</span>.<span style="color:#a6e22e">path</span>(<span style="color:#e6db74">&#39;/&#39;</span>);
+    }).<span style="color:#a6e22e">error</span>(<span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">data</span>, <span style="color:#a6e22e">status</span>) {
+      <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Error &#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">data</span>)
+    })
+  }
+});</code></pre></div>
+<p>O sigui que només és una prova per veure si podia usar Angular des d&rsquo;Spark fent servir Groovy. Es pot :-)</p>
+
+</div>
+
+
+
+<h3>Relacionats:</h3>
+<ul>
+	
+	<li><a href="/blog/repartidor-subvencions-solucio/">Solució al repartidor de subvencions</a></li>
+	
+	<li><a href="/blog/asseure-convidats/">Asseure els convidats en una taula en Groovy</a></li>
+	
+	<li><a href="/blog/pare-noel-solucio/">Resolució El pare Noel al món ASCII</a></li>
+	
+</ul>
+
+
+
+
+    </div>
+
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-74759613-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+  </body>
+</html>

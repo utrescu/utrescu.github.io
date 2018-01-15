@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sistemes on Utrescu</title>
+    <link>https://blog.utrescu.cat/categories/sistemes/</link>
+    <description>Recent content in Sistemes on Utrescu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ca-ES</language>
+    <lastBuildDate>Mon, 22 Aug 2016 18:56:17 +0100</lastBuildDate>
+    
+	<atom:link href="https://blog.utrescu.cat/categories/sistemes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Instal·lació desatesa de Xubuntu per BIOS i EFI</title>
+      <link>https://blog.utrescu.cat/blog/2016-08-22-xubuntu_unattended/</link>
+      <pubDate>Mon, 22 Aug 2016 18:56:17 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/2016-08-22-xubuntu_unattended/</guid>
+      <description>La majoria de tutorials d&amp;rsquo;instal·lació desatesa de sistemes Ubuntu es basen en partir de la versió server. El problema és que al no estar basat en cap de les distribucions s&amp;rsquo;ha de descarregar els paquets durant la instal·lació i per tant tarda una estona &amp;hellip;
+El que seria interessant seria poder modificar directament el LiveCD d&amp;rsquo;instal·lació de Xubuntu (per exemple)
+El problema és que les respostes no són exactament iguals que les d&amp;rsquo;Ubuntu Server perquè les versions amb LiveCD fan servir un instal·lador anomenat Ubiquity.</description>
+    </item>
+    
+  </channel>
+</rss>

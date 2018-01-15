@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>404 Page not found &middot; Utrescu</title>
+  <title>Captures de pantalla de dispositius Android &middot; Utrescu</title>
 
   
   <link rel="stylesheet" href="https://blog.utrescu.cat/css/print.css" media="print">
@@ -22,7 +22,7 @@
   <link rel="shortcut icon" href="/favicon.png">
 
   
-  <link href="https://blog.utrescu.cat/index.xml" rel="alternate" type="application/rss+xml" title="Utrescu" />
+  <link href="" rel="alternate" type="application/rss+xml" title="Utrescu" />
 </head>
 
   <body class=" ">
@@ -54,13 +54,43 @@
 </div>
 
     <div class="content container">
-    
-    <main id="main">
-      <div>
-       <img src="/images/no.png" class="icon"/>
-       <h1 id="title"><a href="/">Tornar</a></h1>
-      </div>
-    </main>
+    <div class="post">
+  <h1>Captures de pantalla de dispositius Android</h1>
+  <span class="post-date">Wed, Jan 3, 2018</span>
+  <p>He estat fent proves sobre com fer aplicacions per Android amb Nativescript.</p>
+
+<blockquote>
+<p>Nativescript és un framework de codi obert que serveix per desenvolupar aplicacions per Android i iOS. Les aplicacions en Nativescript es desenvolupen en Javascript o Typescript i suporta directament Angular i Vue.js (en un plugin de la comunitat). Tot i que el programa està en Javascript pot interactuar directament amb les API i els controls nadius del sistema operatiu.</p>
+</blockquote>
+
+<p>A l&rsquo;hora de fer el README.md de Github he trobat que estaria bé fer unes captures de pantalla de l&rsquo;aplicació executant-se.</p>
+
+<p>Per això he punxat el dispositiu al portàtil i he fet les captures amb <code>adb</code> (reconec que ho tenia anotat):</p>
+
+<pre><code>$ adb shell screencap -p /sdcard/pantalla.png
+$ adb pull /sdcard/pantalla.png
+$ adb shell rm /sdcard/pantalla.png
+</code></pre>
+
+<p>O sigui, primer fer la captura, després la transfereixo a l&rsquo;ordinador i després l&rsquo;esborro.</p>
+
+<p>Quan n&rsquo;he fet un parell ja n&rsquo;estava cansat d&rsquo;escriure tant i la meva reacció natural ha estat fer un script de Bash, però &hellip; Segur que aquest és el millor sistema? Cal desar la captura al dispositiu per després esborrar-la?</p>
+
+<p>O sigui que incomplint aquella regla bàsica de l&rsquo;informàtica que diu, <code>&quot;Quan tota la resta falli, llegeix el manual&quot;</code>, m&rsquo;he posat a mirar la documentació de Google i he descobert que sóc burro.</p>
+
+<p>Es pot fer una captura de pantalla i transferir-la a l&rsquo;ordinador en una sola comanda:</p>
+
+<pre><code>$ adb exec-out screencap -p &gt; captura.png
+</code></pre>
+
+<p>Au, per vergonya meva ho deixo aquí per no haver-ho de buscar més.</p>
+
+</div>
+
+
+
+
+
 
     </div>
 

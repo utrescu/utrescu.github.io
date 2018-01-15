@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on Utrescu</title>
+    <link>https://blog.utrescu.cat/categories/java/</link>
+    <description>Recent content in Java on Utrescu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ca-ES</language>
+    <lastBuildDate>Thu, 01 Jun 2017 18:56:17 +0100</lastBuildDate>
+    
+	<atom:link href="https://blog.utrescu.cat/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Injecció de dependències amb Guice</title>
+      <link>https://blog.utrescu.cat/blog/2017-06-01-injecci%C3%B3_de_dependencies_guice/</link>
+      <pubDate>Thu, 01 Jun 2017 18:56:17 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/2017-06-01-injecci%C3%B3_de_dependencies_guice/</guid>
+      <description>La injecció de dependències és un patró de disseny en el que una classe rep els objectes que necessita ja creats en comptes de crear-los. Es basa en un concepte més genèric anomenat Inversió de Control
+ La inversió de control diu, més o menys, que una classe no hauria de crear cap classe estàticament sinó que les hauria de rebre des de fora.
+ Per tant les classes mai no han de crear els objectes que els hi fan falta (mai faran new)</description>
+    </item>
+    
+    <item>
+      <title>Usar Retrofit2 per consumir serveis REST</title>
+      <link>https://blog.utrescu.cat/blog/2017-05-25-usar_retrofit_per_consumir_serveis_rest/</link>
+      <pubDate>Thu, 25 May 2017 18:56:17 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/2017-05-25-usar_retrofit_per_consumir_serveis_rest/</guid>
+      <description>Retrofit és una llibreria de Java que es fa servir per consumir serveis REST de qualsevol tipus: JSON, XML, Protobuff, etc&amp;hellip;
+La idea de Retrofit és que no cal que ens preocupem de tot el que fa referència a les peticions per la xarxa, ni de construir els objectes, .. Només cal cridar els mètodes correctes i ell se n&amp;rsquo;encarregarà de la resta.
+A més se n&amp;rsquo;encarregarà de convertir les dades rebudes en objectes Java.</description>
+    </item>
+    
+  </channel>
+</rss>

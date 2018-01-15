@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Exercicis on Utrescu</title>
+    <link>https://blog.utrescu.cat/tags/exercicis/</link>
+    <description>Recent content in Exercicis on Utrescu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ca-ES</language>
+    <lastBuildDate>Sun, 27 Dec 2015 19:05:03 +0100</lastBuildDate>
+    
+	<atom:link href="https://blog.utrescu.cat/tags/exercicis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Solució al repartidor de subvencions</title>
+      <link>https://blog.utrescu.cat/blog/repartidor-subvencions-solucio/</link>
+      <pubDate>Sun, 27 Dec 2015 19:05:03 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/repartidor-subvencions-solucio/</guid>
+      <description>He decidit provar com es pot resoldre el problema de repartir subvencions en Groovy i realment la quantitat de línies és molt menor que en Java &amp;hellip;
+Faig servir una expressió regular inicial per separar el nom del nen, que no interessa per res, i la resta ho faig com els alumnes ho intenten fer tot (amb split)
+def regex = ~/^([^:]+): (.*)/ Després només cal separar els personatges entre ells a partir del guió (-):</description>
+    </item>
+    
+    <item>
+      <title>Repartidor de subvencions de Nadal</title>
+      <link>https://blog.utrescu.cat/blog/repartidor-subvencions/</link>
+      <pubDate>Mon, 21 Dec 2015 18:56:17 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/repartidor-subvencions/</guid>
+      <description>He preparat una nova tasca sobre lectura de fitxers pels alumnes de DAW M3 - Programació.
+Com sempre n&amp;rsquo;he fet dues versions, una a Google Docs i una al quadern d&amp;rsquo;exercicis de FP
+ Una cosa que molta gent no sap és que el govern subvenciona als personatges nadalencs que porten regals. Fins fa poc tota la subvenció era rebuda pels tres reis mags però darrerament se l’han hagut de repartir amb el pare Noel.</description>
+    </item>
+    
+    <item>
+      <title>Asseure els convidats en una taula en Groovy</title>
+      <link>https://blog.utrescu.cat/blog/asseure-convidats/</link>
+      <pubDate>Sun, 13 Dec 2015 18:52:27 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/asseure-convidats/</guid>
+      <description>He trobat un problema per Internet que es fa amb una recursivitat clàssica i l&amp;rsquo;he fet servir per aprendre Groovy.
+La idea és asseure els convidats al dinar de Nadal tenint en compte el grau de felicitat que tindran al estar asseguts els uns al costat dels altres.
+Per exemple si tenim una entrada com aquesta (el problema estava en anglès&amp;hellip;):
+Alice would gain 54 happiness units by sitting next to Bob.</description>
+    </item>
+    
+    <item>
+      <title>El pare Noel ha de repartir regals!</title>
+      <link>https://blog.utrescu.cat/blog/pare-noel3/</link>
+      <pubDate>Thu, 10 Dec 2015 17:34:15 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/pare-noel3/</guid>
+      <description>He preparat una nova tasca sobre lectura de fitxers pels alumnes de DAW M3 - Programació.
+Com sempre n&amp;rsquo;he fet dues versions, una a Google Docs i una al quadern d&amp;rsquo;exercicis de FP
+ El pare Noel ha rebut tantes cartes demanant regals que s’ha vist obligat a fer diversos viatges per entregar-los.
+El problema és que el temps és molt just i no es pot anar a la mateixa casa diverses vegades.</description>
+    </item>
+    
+    <item>
+      <title>El pare Noel s&#39;ha trencat una cama</title>
+      <link>https://blog.utrescu.cat/blog/pare-noel2/</link>
+      <pubDate>Wed, 09 Dec 2015 17:12:14 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/pare-noel2/</guid>
+      <description>He preparat una nova tasca sobre lectura de fitxers pels alumnes de DAW M3 - Programació.
+Com sempre n&amp;rsquo;he fet dues versions, una a Google Docs i una al quadern d&amp;rsquo;exercicis de FP
+ El pare Noel va tenir un problema mentre tornava d’una festa (no se sap exactament què va passar però va tenir problemes amb un ren) i es va trencar una cama.
+Per aquest motiu ara no podrà fer el repartiment dels regals de Nadal i han hagut de cercar un substitut.</description>
+    </item>
+    
+    <item>
+      <title>El pare Noel al món ASCII</title>
+      <link>https://blog.utrescu.cat/blog/pare-noel/</link>
+      <pubDate>Wed, 09 Dec 2015 16:05:29 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/pare-noel/</guid>
+      <description>He preparat una tasca sobre lectura de fitxers pels alumnes de DAW3.
+Com sempre n&amp;rsquo;he fet dues versions, una a Google Docs i una al quadern d&amp;rsquo;exercicis de FP
+ Molta gent desconeix que el pare Noel també reparteix regals en el món ASCII. El món ASCII es un món en que els gràfics es formen a partir de caràcters ASCII.
+En aquest món quan es fan fotografies les cases són representades per línies de caràcters: Això és una fotografia de quatre cases</description>
+    </item>
+    
+  </channel>
+</rss>

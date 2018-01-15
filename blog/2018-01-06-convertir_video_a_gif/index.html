@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ca-ES" lang="ca-ES">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.33-DEV" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Convertir vídeos a GIF animats &middot; Utrescu</title>
+
+  
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/print.css" media="print">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/poole.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/syntax.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Utrescu" />
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <img src="/images/xavier.png" class="icon">
+      <a href="https://blog.utrescu.cat/"><h1>Utrescu</h1></a>
+      <p class="lead">
+       One C developer ejected in a web based world 
+      </p>
+      <p class="sidebar-nav-item">
+          <a href="https://github.com/utrescu">
+               <img class="icon" src="/images/icon_github.png">
+          </a>
+          <a href="https://www.twitter.com/utrescu">
+              <img class="icon" src="/images/icon_twitter.png">
+          </a>
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://blog.utrescu.cat/">Home</a> </li>
+      <li><a href="/categories/"> Categories </a></li><li><a href="/tags/"> Etiquetes </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>Convertir vídeos a GIF animats</h1>
+  <span class="post-date">Sat, Jan 6, 2018</span>
+  
+
+<p>Ara tothom fa gifs animats dels programes que desenvolupa i els posa al repositori de GitHub. (sembla que això fa que això et converteix en un desenvolupador que &ldquo;mola&rdquo;)</p>
+
+<p>Com que jo també vull &ldquo;molar&rdquo;, he decidit fer un GIF animat del darrer programa que vaig fer en Android fent servir Nativescript.</p>
+
+<h2 id="capturar-el-vídeo-d-android">Capturar el vídeo d&rsquo;Android</h2>
+
+<p>El primer és aconseguir el vídeo. Per gravar la pantalla d&rsquo;un dispositiu Android n&rsquo;hi ha prou amb endollar el dispositiu a l&rsquo;USB i executar (si tens l&rsquo;SDK instal·lat):</p>
+
+<pre><code>$ adb shell screenrecord  /sdcard/millor.mp4
+$ adb pull /sdcard/millor.mp4
+</code></pre>
+
+<h2 id="convertir-el-vídeo-a-gif">Convertir el vídeo a GIF</h2>
+
+<p>He provat moltes formes de convertir aquest vídeo a gif. Per exemple <code>convert</code> d&rsquo;Imagemagik consumia molta CPU i el resultat no era gaire correcte &hellip;</p>
+
+<pre><code>$ convert millor.mp4 millor.gif
+</code></pre>
+
+<p>La que m&rsquo;ha consumit menys memòria i CPU ha estat fer servir <code>ffmpeg</code>:</p>
+
+<pre><code>$ ffmpeg -i millor.mp4 -vf scale=320:-1 -r 10 -f image2pipe -vcodec ppm - | \\n  convert -delay 5 -loop 0 - millor.gif
+</code></pre>
+
+<p>El resultat ha estat una mica gran per les meves espectatives:</p>
+
+<pre><code>$ ls -hal millor.*
+-rw-rw-r--. 1 xavier xavier  11M  6 gen 01:52 millor.gif
+-rw-r--r--. 1 xavier xavier  13M  6 gen 01:44 millor.mp4
+</code></pre>
+
+<h2 id="optimitzar-el-gif">Optimitzar el GIF</h2>
+
+<p>O sigui que s&rsquo;ha d&rsquo;optimitzar el GIF per  reduir-ne la mida. A cercar optimitzadors &hellip;</p>
+
+<p>L&rsquo;optimitzador que m&rsquo;ha anat millor en Linux ha estat <code>gifsicle</code> amb la optimització 3:</p>
+
+<pre><code>$ gifsicle -i millor.gif -O3 --colors=256 -o millor-nou.gif
+</code></pre>
+
+<p>El resultat encara ha estat una mica massa gran:</p>
+
+<pre><code>$ ls -hal millor.*
+-rw-rw-r--. 1 xavier xavier  11M  6 gen 01:52 millor.gif
+-rw-r--r--. 1 xavier xavier  13M  6 gen 01:44 millor.mp4
+-rw-rw-r--. 1 xavier xavier 4,5M  6 gen 12:12 millor-nou.gif
+</code></pre>
+
+<h2 id="fer-lo-encara-més-petit">Fer-lo encara més petit</h2>
+
+<p>Per fer que ocupi menys he de reduir alguna cosa:</p>
+
+<ol>
+<li>Reduir el número de colors &ndash;colors=128</li>
+<li>Reduir la mida de la imatge &ndash;scale 0.75</li>
+<li>Fer les dues coses :-)</li>
+</ol>
+
+<p>Per tant provo totes les opcions, només escalar:</p>
+
+<pre><code>$ gifsicle -i millor.gif --scale 0.75 -O3 --colors=256 -o millor-r.gif
+</code></pre>
+
+<p>I escalar i reduir els colors:</p>
+
+<pre><code>$ gifsicle -i millor.gif --scale 0.75 -O3 --colors=128 -o millor-re.gif
+</code></pre>
+
+<p>Evidentment escalar i reduir els colors dóna un millor resultat tot i que en algun punt la imatge perd una mica de qualitat:</p>
+
+<pre><code>$ ls -all *.gif -h
+-rw-rw-r--. 1 xavier xavier 2,4M  6 gen 02:04 millor-r.gif
+-rw-rw-r--. 1 xavier xavier 2,0M  6 gen 02:05 millor-re.gif
+-rw-rw-r--. 1 xavier xavier  11M  6 gen 01:52 millor.gif
+</code></pre>
+
+<p>El resultat ha estat aquest:</p>
+
+<p><img src="https://raw.githubusercontent.com/utrescu/ElMillorMenjar/master/readme/millor.gif" alt="Resultat" /></p>
+
+<p>Ja sóc un desenvolupador &ldquo;molón&rdquo;!</p>
+
+</div>
+
+
+
+<h3>Relacionats:</h3>
+<ul>
+	
+	<li><a href="/blog/2018-01-03-captures_de_pantalla_android/">Captures de pantalla de dispositius Android</a></li>
+	
+</ul>
+
+
+
+
+    </div>
+
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-74759613-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+  </body>
+</html>

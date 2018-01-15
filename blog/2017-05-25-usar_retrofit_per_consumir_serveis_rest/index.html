@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ca-ES" lang="ca-ES">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.33-DEV" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Usar Retrofit2 per consumir serveis REST &middot; Utrescu</title>
+
+  
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/print.css" media="print">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/poole.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/syntax.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Utrescu" />
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <img src="/images/xavier.png" class="icon">
+      <a href="https://blog.utrescu.cat/"><h1>Utrescu</h1></a>
+      <p class="lead">
+       One C developer ejected in a web based world 
+      </p>
+      <p class="sidebar-nav-item">
+          <a href="https://github.com/utrescu">
+               <img class="icon" src="/images/icon_github.png">
+          </a>
+          <a href="https://www.twitter.com/utrescu">
+              <img class="icon" src="/images/icon_twitter.png">
+          </a>
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://blog.utrescu.cat/">Home</a> </li>
+      <li><a href="/categories/"> Categories </a></li><li><a href="/tags/"> Etiquetes </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>Usar Retrofit2 per consumir serveis REST</h1>
+  <span class="post-date">Thu, May 25, 2017</span>
+  
+
+<p><a href="http://square.github.io/retrofit/">Retrofit</a> és una llibreria de Java que es fa servir per consumir serveis REST de qualsevol tipus: JSON, XML, Protobuff, etc&hellip;</p>
+
+<p>La idea de Retrofit és que no cal que ens preocupem de tot el que fa referència a les peticions per la xarxa, ni de construir els objectes, .. Només cal cridar els mètodes correctes i ell se n&rsquo;encarregarà de la resta.</p>
+
+<p>A més se n&rsquo;encarregarà de convertir les dades rebudes en objectes Java. Per exemple si ens arriba un objecte com aquest:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#f92672">&#34;id&#34;</span>:<span style="color:#ae81ff">71</span>,<span style="color:#f92672">&#34;nom&#34;</span>:<span style="color:#e6db74">&#34;Vermell&#34;</span>,<span style="color:#f92672">&#34;rgb&#34;</span>:<span style="color:#e6db74">&#34;#FF0000&#34;</span>}</code></pre></div>
+<p>Es pot mapejar en un objecte com aquest (he tret els getters i setters per fer la classe més senzilla)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Color</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">int</span> id<span style="color:#f92672">;</span>
+    String nom<span style="color:#f92672">;</span>
+    String rgb<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<h2 id="exemple-d-ús">Exemple d&rsquo;ús</h2>
+
+<p>Volem consumir un servei REST que està a [<a href="http://colors-rgb.herokuapp.com](&quot;http://colors-rgb.herokuapp.com&quot;">http://colors-rgb.herokuapp.com](&quot;http://colors-rgb.herokuapp.com&quot;</a>) i que proporciona dos mètodes a través de GET:</p>
+
+<table>
+<thead>
+<tr>
+<th>mètode</th>
+<th>resultat</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>/color/nom</td>
+<td>Retorna les dades del color especificat a <em>nom</em> en format JSON. Per exemple la URL &ldquo;/color/verd&rdquo; donarà les dades del color verd.</td>
+</tr>
+
+<tr>
+<td>/colors</td>
+<td>Llista tots els colors del servei</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="afegir-les-llibreries">Afegir les llibreries</h3>
+
+<p>Per poder funcionar caldrà tenir la llibreria Retrofit2 en el CLASSPATH. Es pot fer descarregant les llibreries o bé a través d&rsquo;un gestor de projectes.</p>
+
+<p>Per mi, la forma més senzilla és definir-la en un gestor de projectes Maven o Gradle. En Maven fem una cosa com aquesta:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>com.squareup.retrofit2<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>retrofit<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.3.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span></code></pre></div>
+<p>I en Gradle:</p>
+
+<pre><code>compile 'com.squareup.retrofit2:retrofit:2.0.2'
+</code></pre>
+
+<p>Si el que consumim no és HTML també farà falta afegir quin <strong>conversor</strong> es vol fer servir. En Retrofit hi ha diferents conversors predefinits:</p>
+
+<ul>
+<li><strong>Gson</strong>: com.squareup.retrofit2:converter-gson</li>
+<li><strong>Jackson</strong>: com.squareup.retrofit2:converter-jackson</li>
+<li><strong>Moshi</strong>: com.squareup.retrofit2:converter-moshi</li>
+<li><strong>Protobuf</strong>: com.squareup.retrofit2:converter-protobuf</li>
+<li><strong>Wire</strong>: com.squareup.retrofit2:converter-wire</li>
+<li><strong>Simple XML</strong>: com.squareup.retrofit2:converter-simplexml</li>
+<li><strong>Scalars (dades primitives i les seves classe, i Strings)</strong>: com.squareup.retrofit2:converter-scalars</li>
+</ul>
+
+<p>També se&rsquo;n poden crear de personalitzats (però és una mica més complexe)</p>
+
+<p>Per tant podem fer servir Gson o Jackson per consumir JSON. En el meu cas trio Jackson:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+   <span style="color:#f92672">&lt;groupId&gt;</span>com.squareup.retrofit2<span style="color:#f92672">&lt;/groupId&gt;</span>
+   <span style="color:#f92672">&lt;artifactId&gt;</span>converter-jackson<span style="color:#f92672">&lt;/artifactId&gt;</span>
+   <span style="color:#f92672">&lt;version&gt;</span>2.3.0<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span></code></pre></div>
+<h3 id="crear-els-models">Crear els models</h3>
+
+<p>En aquest cas el model de dades bàsic és senzill. Només cal crear un objecte <em>Color</em> (Jackson necessita <em>getters</em> i <em>setters</em>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Color</span> <span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">int</span> id<span style="color:#f92672">;</span>
+   String nom<span style="color:#f92672">;</span>
+   String rgb<span style="color:#f92672">;</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getId</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">return</span> id<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setId</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> id<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">id</span> <span style="color:#f92672">=</span> id<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getNom</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">return</span> nom<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setNom</span><span style="color:#f92672">(</span>String nom<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">nom</span> <span style="color:#f92672">=</span> nom<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getRgb</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">return</span> rgb<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span>
+
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setRgb</span><span style="color:#f92672">(</span>String rgb<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rgb</span> <span style="color:#f92672">=</span> rgb<span style="color:#f92672">;</span>
+   <span style="color:#f92672">}</span></code></pre></div>
+<p>En general el model es crea seguint les normes del conversor que es farà servir.</p>
+
+<p>Si es fa servir Jackson com a conversor al definir el model es poden fer servir qualsevol de les anotacions de Jackson:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@JsonIgnoreProperties</span><span style="color:#f92672">({</span><span style="color:#e6db74">&#34;nomEnCastella&#34;</span><span style="color:#f92672">})</span>
+<span style="color:#a6e22e">@JsonIgnoreProperties</span><span style="color:#f92672">(</span>ignoreUnknown<span style="color:#f92672">=</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Color</span> <span style="color:#f92672">{</span>
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> id<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">public</span> String nom<span style="color:#f92672">;</span>
+	<span style="color:#66d9ef">public</span> String nomEnCastella<span style="color:#f92672">;</span>
+	<span style="color:#66d9ef">public</span> String rgb<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<h3 id="definir-el-servei">Definir el servei</h3>
+
+<p>Per consumir el servei cal definir en una interfície quins són els mètodes de l&rsquo;API que es faran servir:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> net.xaviersala.model.Color<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> retrofit2.Call<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> retrofit2.http.GET<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> retrofit2.http.Path<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ColorsRestService</span> <span style="color:#f92672">{</span>
+
+	<span style="color:#a6e22e">@GET</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;color/{color}&#34;</span><span style="color:#f92672">)</span>
+	Call<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getColor</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;color&#34;</span><span style="color:#f92672">)</span> String color<span style="color:#f92672">);</span>
+
+  <span style="color:#a6e22e">@Get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;color&#34;</span><span style="color:#f92672">)</span> Call<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">getColor</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Query</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nom&#34;</span><span style="color:#f92672">)</span> String nom<span style="color:#f92672">))</span>
+
+	<span style="color:#a6e22e">@GET</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/colors&#34;</span><span style="color:#f92672">)</span>
+	Call<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">getColors</span><span style="color:#f92672">();</span>
+
+	<span style="color:#a6e22e">@Post</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/color/crear&#34;</span><span style="color:#f92672">)</span>
+	Call<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">crearColor</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Body</span> Color nou<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<p>Com es pot veure, amb Retrofit 2 sempre es retorna un objecte parametritzat en <strong><code>Call&lt;T&gt;</code></strong>. Bàsicament això és així per poder cridar els mètodes tant de forma síncrona com asíncrona.</p>
+
+<p>Es defineixen amb anotacions els diferents mètodes HTTP: (GET, POST, DELETE, &hellip;), els paràmetres variables <strong>@Path</strong>, els paràmetres amb <strong>@Query</strong>, el cos del missatge amb <strong>@Body</strong>, a més d&rsquo;altres anotacions sobre com funciona la petició <strong>@FormUrlEncoded</strong>, <strong>@Multipart</strong>, <strong>@Headers</strong>, <strong>Field</strong>, etc..</p>
+
+<p>Aquí hi poso uns exemples diversos que no tenen a veure amb l&rsquo;exemple</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@FormUrlEncoded</span>
+<span style="color:#a6e22e">@POST</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/afegir/color&#34;</span><span style="color:#f92672">)</span>
+Call<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">formulariColors</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Field</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nom&#34;</span><span style="color:#f92672">)</span> String nom<span style="color:#f92672">);</span></code></pre></div>
+<h3 id="usar-lo">Usar-lo</h3>
+
+<p>El programa principal ha de construir un objecte Retrofit, en el que se li pot definir la URL, el conversor que es farà servir, &hellip; :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Retrofit retrofit <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Retrofit<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">()</span>
+  <span style="color:#f92672">.</span><span style="color:#a6e22e">baseUrl</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://colors-rgb.herokuapp.com&#34;</span><span style="color:#f92672">)</span>
+  <span style="color:#f92672">.</span><span style="color:#a6e22e">addConverterFactory</span><span style="color:#f92672">(</span>JacksonConverterFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">())</span>
+  <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span></code></pre></div>
+<p>A partir de l&rsquo;objecte Retrofit es crea el servei a partir de la interfície que hem definit abans:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">ColorsRestService service <span style="color:#f92672">=</span> retrofit<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>ColorsRestService<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span></code></pre></div>
+<h4 id="crida-síncrona">Crida síncrona</h4>
+
+<p>Es poden fer crides a l&rsquo;API de forma síncrona o asíncrona. El mètode síncron és el més senzill. Les crides síncrones es fan amb el mètode <strong>execute()</strong>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Call<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> crida <span style="color:#f92672">=</span>  service<span style="color:#f92672">.</span><span style="color:#a6e22e">getColor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;vermell&#34;</span><span style="color:#f92672">);</span>
+Color color <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">().</span><span style="color:#a6e22e">body</span><span style="color:#f92672">();</span></code></pre></div>
+<p>També es pot recollir la resposta en un objecte <em><code>Response&lt;T&gt;</code></em> de manera que es podran comprovar altres coses sobre la resposta:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Response<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> resposta <span style="color:#f92672">=</span> service<span style="color:#f92672">.</span><span style="color:#a6e22e">getColor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;vermell&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">();</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">code</span> <span style="color:#f92672">==</span> 200<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Color color <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span><span style="color:#a6e22e">body</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<h4 id="crida-asíncrona">Crida asíncrona</h4>
+
+<p>Per fer una petició asíncrona caldrà definir els mètodes <em><code>onResponse()</code></em> i <em><code>onFailure()</code></em> en un Callback i fer servir <strong>enqueue()</strong> en comptes d&rsquo;<strong>execute()</strong> per fer la crida:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Call<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> call <span style="color:#f92672">=</span> apiService<span style="color:#f92672">.</span><span style="color:#a6e22e">getColor</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;vermell&#34;</span><span style="color:#f92672">);</span>
+call<span style="color:#f92672">.</span><span style="color:#a6e22e">enqueue</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Callback<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onResponse</span><span style="color:#f92672">(</span>Call<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> call<span style="color:#f92672">,</span> Response<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> response<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> statusCode <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span><span style="color:#a6e22e">code</span><span style="color:#f92672">();</span>
+        Color user <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span><span style="color:#a6e22e">body</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onFailure</span><span style="color:#f92672">(</span>Call<span style="color:#f92672">&lt;</span>Color<span style="color:#f92672">&gt;</span> call<span style="color:#f92672">,</span> Throwable t<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// error!
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+<span style="color:#f92672">});</span></code></pre></div>
+<h3 id="projecte-github">Projecte GitHub</h3>
+
+<p>He fet un projecte a GitHub que fa servir Retrofit2 i que és una mica més elaborat del que he explicat aquí: <a href="https://github.com/utrescu/RetrofitColors">Exemple</a></p>
+
+</div>
+
+
+
+<h3>Relacionats:</h3>
+<ul>
+	
+	<li><a href="/blog/2016-02-10-groovy_spark_angular/">Fent servir Groovy, SparkJava i Angular</a></li>
+	
+	<li><a href="/blog/repartidor-subvencions-solucio/">Solució al repartidor de subvencions</a></li>
+	
+	<li><a href="/blog/pare-noel-solucio/">Resolució El pare Noel al món ASCII</a></li>
+	
+</ul>
+
+
+
+
+    </div>
+
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-74759613-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+  </body>
+</html>

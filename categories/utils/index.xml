@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Utils on Utrescu</title>
+    <link>https://blog.utrescu.cat/categories/utils/</link>
+    <description>Recent content in Utils on Utrescu</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ca-ES</language>
+    <lastBuildDate>Sat, 06 Jan 2018 18:56:17 +0100</lastBuildDate>
+    
+	<atom:link href="https://blog.utrescu.cat/categories/utils/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Convertir vídeos a GIF animats</title>
+      <link>https://blog.utrescu.cat/blog/2018-01-06-convertir_video_a_gif/</link>
+      <pubDate>Sat, 06 Jan 2018 18:56:17 +0100</pubDate>
+      
+      <guid>https://blog.utrescu.cat/blog/2018-01-06-convertir_video_a_gif/</guid>
+      <description>Ara tothom fa gifs animats dels programes que desenvolupa i els posa al repositori de GitHub. (sembla que això fa que això et converteix en un desenvolupador que &amp;ldquo;mola&amp;rdquo;)
+Com que jo també vull &amp;ldquo;molar&amp;rdquo;, he decidit fer un GIF animat del darrer programa que vaig fer en Android fent servir Nativescript.
+Capturar el vídeo d&amp;rsquo;Android El primer és aconseguir el vídeo. Per gravar la pantalla d&amp;rsquo;un dispositiu Android n&amp;rsquo;hi ha prou amb endollar el dispositiu a l&amp;rsquo;USB i executar (si tens l&amp;rsquo;SDK instal·lat):</description>
+    </item>
+    
+  </channel>
+</rss>

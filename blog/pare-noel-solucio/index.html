@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ca-ES" lang="ca-ES">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.33-DEV" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Resolució El pare Noel al món ASCII &middot; Utrescu</title>
+
+  
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/print.css" media="print">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/poole.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/syntax.css">
+  <link rel="stylesheet" href="https://blog.utrescu.cat/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Utrescu" />
+</head>
+
+  <body class=" ">
+  <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <img src="/images/xavier.png" class="icon">
+      <a href="https://blog.utrescu.cat/"><h1>Utrescu</h1></a>
+      <p class="lead">
+       One C developer ejected in a web based world 
+      </p>
+      <p class="sidebar-nav-item">
+          <a href="https://github.com/utrescu">
+               <img class="icon" src="/images/icon_github.png">
+          </a>
+          <a href="https://www.twitter.com/utrescu">
+              <img class="icon" src="/images/icon_twitter.png">
+          </a>
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="https://blog.utrescu.cat/">Home</a> </li>
+      <li><a href="/categories/"> Categories </a></li><li><a href="/tags/"> Etiquetes </a></li>
+    </ul>
+
+    <p>&copy; 2018. All rights reserved. </p>
+  </div>
+</div>
+
+    <div class="content container">
+    <div class="post">
+  <h1>Resolució El pare Noel al món ASCII</h1>
+  <span class="post-date">Sat, Dec 26, 2015</span>
+  <p>La majoria dels alumnes han optat per anar llegint les cadenes una a una i després cercar-ne les vegades que surt cada personatge amb <em>indexOf</em>.</p>
+
+<p>Això els ha portat al &ldquo;problema&rdquo; de que el Pare Noel també és un follet (i els ha costat molt descobrir que només calia restar&hellip;)</p>
+
+<p>Però hi ha una solució més elegant fent servir expressions regulars</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String PARE_NOEL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Pare Noel&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String REN_NOM <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Ren&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FOLLET_NOM <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Follet&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String PARE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\\*&lt;]:-DOo&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String REN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&gt;:o\\)&#34;</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String FOLLET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;[^\\*]&lt;]:-D&#34;</span><span style="color:#f92672">;</span>
+
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+            String linea<span style="color:#f92672">;</span>
+
+            BufferedReader db <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BufferedReader<span style="color:#f92672">(</span>
+                    <span style="color:#66d9ef">new</span> InputStreamReader<span style="color:#f92672">(</span>App<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getResource</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/foto.txt&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">openStream</span><span style="color:#f92672">()));</span>
+
+            <span style="color:#66d9ef">while</span> <span style="color:#f92672">((</span>linea <span style="color:#f92672">=</span> db<span style="color:#f92672">.</span><span style="color:#a6e22e">readLine</span><span style="color:#f92672">())</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+                Busca<span style="color:#f92672">(</span>PARE<span style="color:#f92672">,</span> linea<span style="color:#f92672">,</span> PARE_NOEL<span style="color:#f92672">);</span>
+                Busca<span style="color:#f92672">(</span>REN<span style="color:#f92672">,</span> linea<span style="color:#f92672">,</span> REN_NOM<span style="color:#f92672">);</span>
+                Busca<span style="color:#f92672">(</span>FOLLET<span style="color:#f92672">,</span> linea<span style="color:#f92672">,</span> FOLLET_NOM<span style="color:#f92672">);</span>
+                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Busca</span><span style="color:#f92672">(</span>String pat<span style="color:#f92672">,</span> String linia<span style="color:#f92672">,</span> String text<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Pattern p <span style="color:#f92672">=</span> Pattern<span style="color:#f92672">.</span><span style="color:#a6e22e">compile</span><span style="color:#f92672">(</span>pat<span style="color:#f92672">);</span>
+            Matcher m <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span><span style="color:#a6e22e">matcher</span><span style="color:#f92672">(</span>linia<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+
+            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                count<span style="color:#f92672">++;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>count <span style="color:#f92672">!=</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>text <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#f92672">+</span> count <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;) &#34;</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span></code></pre></div>
+<p>Es pot obtenir el codi en Maven a <a href="https://bitbucket.org/francesc_xavier_sala_pujolar/asciinoel/src">Bitbucket</a></p>
+
+</div>
+
+
+
+<h3>Relacionats:</h3>
+<ul>
+	
+	<li><a href="/blog/repartidor-subvencions/">Repartidor de subvencions de Nadal</a></li>
+	
+	<li><a href="/blog/pare-noel3/">El pare Noel ha de repartir regals!</a></li>
+	
+	<li><a href="/blog/pare-noel2/">El pare Noel s&#39;ha trencat una cama</a></li>
+	
+</ul>
+
+
+
+
+    </div>
+
+    
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-74759613-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+  </body>
+</html>
